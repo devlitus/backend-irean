@@ -35,10 +35,11 @@ export default [
     name: 'strapi::session',
     config: {
       cookie: {
-        secure: true,
+        secure: 'auto', // Automatically detect HTTPS from proxy headers
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
         sameSite: 'lax',
+        signed: true,
       },
     },
   },
