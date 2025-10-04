@@ -30,6 +30,28 @@
         "images",
         "files"
       ]
+    },
+    "vendido": {
+      "type": "boolean"
+    },
+    "stock": {
+      "type": "integer"
+    },
+    "sluk": {
+      "type": "uid",
+      "required": true
+    },
+    "categoria": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::categoria.categoria",
+      "mappedBy": "producto"
+    },
+    "subcategoria": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::subcategoria.subcategoria",
+      "mappedBy": "producto"
     }
   }
 }

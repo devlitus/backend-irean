@@ -1,0 +1,67 @@
+# Subcategoria REST API
+@baseUrl=http://localhost:1337
+@id=exampleSubcategoryId12345
+@categoriaId=exampleCategoryId12345
+
+### Listar todas las subcategorías
+GET {{baseUrl}}/api/subcategorias
+
+### Listar subcategorías con filtros (por categoría)
+GET {{baseUrl}}/api/subcategorias?filters[categoria][id][$eq]={{categoriaId}}
+
+### Listar subcategorías con populate de categoría
+GET {{baseUrl}}/api/subcategorias?populate=categoria
+
+### Obtener subcategoría por ID
+GET {{baseUrl}}/api/subcategorias/{{id}}
+
+### Obtener subcategoría con su categoría relacionada
+GET {{baseUrl}}/api/subcategorias/{{id}}?populate=categoria
+
+### Crear nueva subcategoría
+POST {{baseUrl}}/api/subcategorias
+Content-Type: application/json
+
+{
+  "data": {
+    "nombre": "Café Orgánico",
+    "descripcion": "Subcategoría para cafés con certificación orgánica"
+  }
+}
+
+### Crear subcategoría con relación a categoría
+POST {{baseUrl}}/api/subcategorias
+Content-Type: application/json
+
+{
+  "data": {
+    "nombre": "Café Descafeinado",
+    "descripcion": "Subcategoría para cafés sin cafeína",
+    "categoria": {{categoriaId}}
+  }
+}
+
+### Actualizar subcategoría
+PUT {{baseUrl}}/api/subcategorias/{{id}}
+Content-Type: application/json
+
+{
+  "data": {
+    "nombre": "Café Orgánico Premium",
+    "descripcion": "Subcategoría actualizada para cafés orgánicos de alta calidad"
+  }
+}
+
+### Actualizar subcategoría y cambiar su categoría
+PUT {{baseUrl}}/api/subcategorias/{{id}}
+Content-Type: application/json
+
+{
+  "data": {
+    "nombre": "Café Especial",
+    "categoria": {{categoriaId}}
+  }
+}
+
+### Eliminar subcategoría
+DELETE {{baseUrl}}/api/subcategorias/{{id}}

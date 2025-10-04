@@ -1,5 +1,9 @@
 # Guía para Agentes de IA - Backend Irean (Strapi 5)
 
+## Descripcion del Proyecto
+
+Este es un backend para una web app de e-commerce llamada Irean, construida con Strapi 5 y TypeScript. Provee una API REST para gestionar productos, usuarios y pedidos, con autenticación JWT y roles de usuario. El backend está desplegado en Railway y usa SQLite en desarrollo y PostgreSQL en producción.
+
 ## Arquitectura General
 
 Este es un backend **Strapi 5** con TypeScript, desplegado en Railway. Estructura clave:

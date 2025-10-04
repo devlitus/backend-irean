@@ -4,11 +4,12 @@
 ### Listar todos los productos
 GET {{baseUrl}}/api/productos
 
+### Obtener producto por ID con relaciones pobladas
+GET {{baseUrl}}/api/productos/{{id}}?populate=*
+
 ### Obtener producto por ID
 GET {{baseUrl}}/api/productos/{{id}}
 
-### Obtener producto por ID con relaciones pobladas
-GET {{baseUrl}}/api/productos/{{id}}?populate=*
 
 ### Crear nuevo producto
 POST {{baseUrl}}/api/productos
