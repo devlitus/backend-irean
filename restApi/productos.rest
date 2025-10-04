@@ -1,0 +1,2 @@
+# GET http://backend-irean-production.up.railway.app/api/productos
+backend-irean-production.up.railway.app/api/productos
