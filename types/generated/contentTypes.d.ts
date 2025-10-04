@@ -430,6 +430,35 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCategoriaCategoria extends Struct.CollectionTypeSchema {
+  collectionName: 'categorias';
+  info: {
+    displayName: 'categoria';
+    pluralName: 'categorias';
+    singularName: 'categoria';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    descripcion: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::categoria.categoria'
+    > &
+      Schema.Attribute.Private;
+    nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
   collectionName: 'productos';
   info: {
@@ -445,14 +474,16 @@ export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     descripcion: Schema.Attribute.Blocks;
+    imagen: Schema.Attribute.Media<'images' | 'files', true> &
+      Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::producto.producto'
     > &
       Schema.Attribute.Private;
-    nombre: Schema.Attribute.String;
-    precio: Schema.Attribute.Decimal;
+    nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    precio: Schema.Attribute.Decimal & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -970,6 +1001,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::categoria.categoria': ApiCategoriaCategoria;
       'api::producto.producto': ApiProductoProducto;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
