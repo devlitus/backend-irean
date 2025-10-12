@@ -1,2 +1,51 @@
-# GET http://backend-irean-production.up.railway.app/api/productos
-backend-irean-production.up.railway.app/api/productos
+@baseUrl=http://backend-irean-production.up.railway.app/api
+@id=lihec8py7e9qtqppcsw1xz23
+
+### Listar todos los productos
+GET {{baseUrl}}/productos
+
+## Listar todos los productos con relaciones pobladas
+GET {{baseUrl}}/productos?populate=*
+
+### Obtener producto por ID
+GET {{baseUrl}}/productos/{{id}}
+
+### Obtener producto por ID con relaciones pobladas
+GET {{baseUrl}}/productos/{{id}}?populate=*
+
+### Crear nuevo producto
+POST {{baseUrl}}/productos
+
+Content-Type: application/json
+
+{
+  "data": {
+    "nombre": "Bodí Bosque Mágico (0-3 meses)",
+    "precio": 25.99,
+    "descripcion": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "text": "Bodí de algodón suave con estampado Bosque Mágico, ideal para bebés 0-3 meses: cómodo, transpirable y fácil de lavar."
+          }
+        ]
+      }
+    ]
+  }
+}
+
+### Actualizar producto
+PUT {{baseUrl}}/productos/{{id}}
+Content-Type: application/json
+
+{
+  "data": {
+    "nombre": "Bodí Mariposas Mágicas (0-3 meses)",
+    "precio": 29.99
+  }
+}
+
+### Eliminar producto
+DELETE {{baseUrl}}/productos/{{id}}
