@@ -1,92 +1,61 @@
-# Commit Conventions Guide
+# Automated Commits by Convention
 
-This project uses **Conventional Commits** with Husky + Commitlint validation.
+You are helping the user commit all staged and unstaged changes to the repository, organizing them by Conventional Commits standards.
 
-## Quick Start
+## Task
 
-```bash
-npm run commit
-# or
-git commit -m "type(scope): subject"
-```
+1. **View current state**: Run `git status` and `git diff` to see what has changed
+2. **Analyze changes**: Group files by type of change:
+   - **feat**: New features
+   - **fix**: Bug fixes
+   - **docs**: Documentation changes
+   - **refactor**: Code refactoring
+   - **style**: Formatting/styling (no logic)
+   - **test**: Test files
+   - **chore**: Dependencies, config, maintenance
+   - **perf**: Performance improvements
+   - **ci**: CI/CD changes
 
-## Commit Format
+3. **Make commits**: For each group of changes:
+   ```bash
+   git add <specific-files>
+   git commit -m "type(scope): description"
+   ```
 
-```
-<type>(<scope>): <subject>
-```
+   Examples:
+   - `feat(api): add new product endpoint`
+   - `fix(database): resolve connection pooling issue`
+   - `docs(readme): update installation instructions`
+   - `chore(deps): update strapi to v5.26.0`
 
-## Types
+4. **Push to repository**:
+   ```bash
+   git push origin <current-branch>
+   ```
 
-- **feat** - A new feature
-- **fix** - A bug fix
-- **docs** - Documentation only changes
-- **style** - Format/styling (no code logic changes)
-- **refactor** - Code refactoring (no feature/bug changes)
-- **perf** - Performance improvements
-- **test** - Adding or updating tests
-- **chore** - Maintenance tasks, dependencies
-- **ci** - CI/CD configuration changes
-- **revert** - Reverting a previous commit
+## Rules
 
-## Scopes (Optional)
+- Make **separate commits** for different types of changes
+- Keep each commit focused on one thing
+- Use lowercase for type and subject
+- Maximum 100 characters for commit message
+- No period at the end of subject
+- Scope is optional but recommended when relevant
 
-- `api` - API layer changes
-- `auth` - Authentication related
-- `database` - Database changes
+## Default Scope Suggestions
+
+- `api` - API endpoints, controllers
+- `auth` - Authentication
+- `database` - Database, schemas
 - `config` - Configuration files
 - `docs` - Documentation
 - `scripts` - Utility scripts
 - `deps` - Dependencies
-- `types` - Type definitions
 
-## Examples
+## Report
 
-```bash
-# Feature with scope
-feat(api): add JWT token refresh endpoint
-
-# Bug fix with scope
-fix(database): resolve connection pooling issue
-
-# Documentation
-docs(readme): update installation instructions
-
-# Chore/refactor
-chore(deps): update strapi to v5.26.0
-refactor(api): simplify product controller logic
-```
-
-## Rules
-
-- ✅ Type must be lowercase
-- ✅ Subject must start with lowercase
-- ✅ No period at end of subject
-- ✅ Maximum 100 characters for header
-- ✅ Empty type/subject not allowed
-- ❌ Commits that don't follow format will be rejected by Husky
-
-## Interactive Commit (Recommended)
-
-```bash
-npm run commit
-```
-
-This guides you through:
-1. Select commit type
-2. Select scope (optional)
-3. Write subject
-4. Add optional body
-5. Add optional breaking changes
-6. Confirm
-
-## Verify Commit Format
-
-```bash
-npm run commit:check
-```
-
-## References
-
-- Full guide: `.github/copilot-instructions.md` → "Commit Conventions" section
-- Conventional Commits spec: https://www.conventionalcommits.org/
+After pushing, show the user:
+1. ✅ Number of commits created
+2. ✅ List of commit messages
+3. ✅ Current branch status (ahead/behind)
+4. ✅ Confirmation that push was successful
