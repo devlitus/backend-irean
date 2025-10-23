@@ -452,7 +452,6 @@ export interface ApiCategoriaCategoria extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     nombre: Schema.Attribute.String & Schema.Attribute.Required;
-    producto: Schema.Attribute.Relation<'oneToOne', 'api::producto.producto'>;
     publishedAt: Schema.Attribute.DateTime;
     subcategorias: Schema.Attribute.Relation<
       'oneToMany',
@@ -475,10 +474,6 @@ export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    categoria: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::categoria.categoria'
-    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -496,10 +491,6 @@ export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     sluk: Schema.Attribute.UID & Schema.Attribute.Required;
     stock: Schema.Attribute.Integer;
-    subcategoria: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::subcategoria.subcategoria'
-    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -534,7 +525,6 @@ export interface ApiSubcategoriaSubcategoria
     > &
       Schema.Attribute.Private;
     nombre: Schema.Attribute.String;
-    producto: Schema.Attribute.Relation<'oneToOne', 'api::producto.producto'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
