@@ -1,4 +1,4 @@
-// import type { Core } from '@strapi/strapi';
+import type { Core } from '@strapi/strapi';
 
 export default {
   /**
@@ -7,14 +7,26 @@ export default {
    *
    * This gives you an opportunity to extend code.
    */
-  register(/* { strapi }: { strapi: Core.Strapi } */) {},
+  register({ strapi }: { strapi: Core.Strapi }) {
+    // Opcional: extender funcionalidades aquí
+  },
 
   /**
    * An asynchronous bootstrap function that runs before
    * your application gets started.
    *
-   * This gives you an opportunity to set up your data model,
-   * run jobs, or perform some special logic.
+   * Ejecuta el seed de producción automáticamente
    */
-  bootstrap(/* { strapi }: { strapi: Core.Strapi } */) {},
+  async bootstrap({ strapi }: { strapi: Core.Strapi }) {
+    // Solo ejecutar seed en producción
+    if (process.env.NODE_ENV === 'production') {
+      try {
+        const seedProduction = require('../scripts/seed-production.js');
+        await seedProduction();
+      } catch (error) {
+        console.error('Error ejecutando seed de producción:', error);
+        // No bloquear el inicio de Strapi si falla el seed
+      }
+    }
+  },
 };
