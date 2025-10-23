@@ -30,4 +30,4 @@ These are the single source of truth for this project.
 
 ## Custom Commands
 
-- `/commit` - Commit conventions guide (types, scopes, examples, and how to use)
+- `/commit` - Automated commits by Conventional Commits standard (analyzes changes, groups by type, makes separate commits, and pushes to repository)
