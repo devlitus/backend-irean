@@ -182,6 +182,91 @@ defaultLimit: 25, maxLimit: 100, withCount: true
 - **TypeScript Guide**: https://docs.strapi.io/dev-docs/typescript
 - **Deployment Railway**: https://docs.strapi.io/dev-docs/deployment/railway
 
+## Commit Conventions (Conventional Commits)
+
+This project uses **Conventional Commits** enforced by Husky + Commitlint.
+
+### Commit Format
+
+```
+<type>(<scope>): <subject>
+```
+
+### Types
+
+- **feat** - A new feature
+- **fix** - A bug fix
+- **docs** - Documentation only changes
+- **style** - Format/styling (no code logic changes)
+- **refactor** - Code refactoring (no feature/bug changes)
+- **perf** - Performance improvements
+- **test** - Adding or updating tests
+- **chore** - Maintenance tasks, dependencies
+- **ci** - CI/CD configuration changes
+- **revert** - Reverting a previous commit
+
+### Scopes (Optional)
+
+- `api` - API layer changes
+- `auth` - Authentication related
+- `database` - Database changes
+- `config` - Configuration files
+- `docs` - Documentation
+- `scripts` - Utility scripts
+- `deps` - Dependencies
+- `types` - Type definitions
+
+### Examples
+
+```bash
+# Feature with scope
+feat(api): add JWT token refresh endpoint
+
+# Bug fix with scope
+fix(database): resolve connection pooling issue
+
+# Documentation
+docs(readme): update installation instructions
+
+# Breaking change (use in body)
+feat(auth)!: redesign authentication flow
+
+# Multiple fixes
+fix(config): update CORS settings
+fix(scripts): correct seed.js import path
+```
+
+### Making Commits
+
+**Option 1: Interactive commit (Recommended)**
+```bash
+npm run commit
+# Guides you through all fields interactively
+```
+
+**Option 2: Direct git commit**
+```bash
+git add .
+git commit -m "feat(api): add new endpoint"
+# Husky validates the format automatically
+```
+
+**Option 3: Check commit format**
+```bash
+npm run commit:check
+```
+
+### Rules Enforced by Commitlint
+
+- ✅ Type must be lowercase
+- ✅ Subject must start with lowercase
+- ✅ No period at end of subject
+- ✅ Maximum 100 characters for header
+- ✅ Empty type/subject not allowed
+- ❌ Commits that don't follow format will be rejected
+
+---
+
 ## Modification Rules
 
 When modifying or creating code:
