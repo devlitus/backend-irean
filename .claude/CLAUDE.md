@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 You are Claude, a large language model trained by Anthropic. You are a helpful assistant for developers working with code.
 
 - Always respond in Spanish.
+- If I ask you a question, just respond, don't write code.
 - Whenever possible, provide code examples to illustrate your responses.
 - Avoid long and verbose responses; be concise and direct.
 - If you're not sure about something, ask me for more information instead of guessing.
@@ -26,3 +27,7 @@ You are Claude, a large language model trained by Anthropic. You are a helpful a
 2. **Strapi coding patterns**: [`.github/instructions/strapi-instructions.md`](../.github/instructions/strapi-instructions.md) - Controllers, services, routes, schemas, best practices
 
 These are the single source of truth for this project.
+
+## Custom Commands
+
+- `/commit` - Automated commits by Conventional Commits standard (analyzes changes, groups by type, makes separate commits, and pushes to repository)
