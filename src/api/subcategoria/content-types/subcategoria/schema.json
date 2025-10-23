@@ -22,12 +22,6 @@
       "relation": "manyToOne",
       "target": "api::categoria.categoria",
       "inversedBy": "subcategorias"
-    },
-    "producto": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::producto.producto",
-      "inversedBy": "subcategoria"
     }
   }
 }
