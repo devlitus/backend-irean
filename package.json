@@ -14,8 +14,6 @@
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
     "upgrade:dry": "npx @strapi/upgrade latest --dry",
-    "commit": "cz c",
-    "commit:check": "commitlint --from HEAD~1 --to HEAD"
   },
   "dependencies": {
     "@strapi/plugin-cloud": "5.25.0",
@@ -32,14 +30,9 @@
     "styled-components": "^6.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "commitizen": "^4.3.1",
-    "cz-conventional-changelog": "^3.3.0",
-    "husky": "^9.1.7",
     "typescript": "^5"
   },
   "engines": {
