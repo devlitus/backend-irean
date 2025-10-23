@@ -69,6 +69,10 @@ module.exports = {
   // limit subject length
   subjectLimit: 100,
 
+  // Disable automatic footer generation
+  // Only include co-author/generated-by footers if explicitly provided
+  skipQuestions: [],
+
   // breaklineChar: '|', // It is supported for fields body and footer.
   // footerPrefix : 'ISSUES CLOSED:'
   // askForBreakingChangeFirst : true, // default is false

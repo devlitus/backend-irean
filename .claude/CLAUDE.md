@@ -26,3 +26,7 @@ You are Claude, a large language model trained by Anthropic. You are a helpful a
 2. **Strapi coding patterns**: [`.github/instructions/strapi-instructions.md`](../.github/instructions/strapi-instructions.md) - Controllers, services, routes, schemas, best practices
 
 These are the single source of truth for this project.
+
+## Custom Commands
+
+- `/commit` - Commit conventions guide (types, scopes, examples, and how to use)
