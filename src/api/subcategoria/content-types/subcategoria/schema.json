@@ -4,7 +4,7 @@
   "info": {
     "singularName": "subcategoria",
     "pluralName": "subcategorias",
-    "displayName": "subcategoria"
+    "displayName": "subcategory"
   },
   "options": {
     "draftAndPublish": true
@@ -21,6 +21,12 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::categoria.categoria",
+      "inversedBy": "subcategorias"
+    },
+    "producto": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::producto.producto",
       "inversedBy": "subcategorias"
     }
   }

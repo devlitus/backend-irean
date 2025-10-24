@@ -4,7 +4,7 @@
   "info": {
     "singularName": "producto",
     "pluralName": "productos",
-    "displayName": "producto"
+    "displayName": "product"
   },
   "options": {
     "draftAndPublish": true
@@ -40,6 +40,34 @@
     "sluk": {
       "type": "uid",
       "required": true
+    },
+    "categoria": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::categoria.categoria",
+      "mappedBy": "producto"
+    },
+    "subcategorias": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subcategoria.subcategoria",
+      "mappedBy": "producto"
+    },
+    "gender": {
+      "type": "enumeration",
+      "enum": [
+        "female",
+        "male"
+      ]
+    },
+    "years": {
+      "type": "enumeration",
+      "enum": [
+        "newborn_infant",
+        "newborn_toddler",
+        "children",
+        "youth"
+      ]
     }
   }
 }
