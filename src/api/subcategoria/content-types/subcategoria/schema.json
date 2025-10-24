@@ -16,12 +16,6 @@
     },
     "descripcion": {
       "type": "string"
-    },
-    "categoria": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::categoria.categoria",
-      "inversedBy": "subcategorias"
     }
   }
 }
