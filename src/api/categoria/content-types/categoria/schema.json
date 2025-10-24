@@ -18,11 +18,11 @@
     "descripcion": {
       "type": "string"
     },
-    "subcategoria": {
+    "subcategorias": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToMany",
       "target": "api::subcategoria.subcategoria",
-      "inversedBy": "categorias"
+      "mappedBy": "categoria"
     }
   }
 }
