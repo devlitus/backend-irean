@@ -16,6 +16,12 @@
     },
     "descripcion": {
       "type": "string"
+    },
+    "categorias": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::categoria.categoria",
+      "mappedBy": "subcategoria"
     }
   }
 }
