@@ -1,10 +1,57 @@
 @baseUrl=http://localhost:1337
 @id=lihec8py7e9qtqppcsw1xz23
 
-### Listar todos los productos
+### List all products
 GET {{baseUrl}}/api/productos
 
-### Obtener producto por ID con relaciones pobladas
+@baseUrl=http://localhost:1337
+@id=lihec8py7e9qtqppcsw1xz23
+
+### List all products
+GET {{baseUrl}}/api/productos
+
+### Get product by ID with populated relations
+GET {{baseUrl}}/api/productos/{{id}}?populate=*
+
+### Get product by ID
+GET {{baseUrl}}/api/productos/{{id}}
+
+
+### Create new product
+POST {{baseUrl}}/api/productos
+Content-Type: application/json
+
+{
+  "data": {
+    "nombre": "Bodí Bosque Mágico (0-3 meses)",
+    "precio": 25.99,
+    "descripcion": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "text": "Bodí de algodón suave con estampado Bosque Mágico, ideal para bebés 0-3 meses: cómodo, transpirable y fácil de lavar."
+          }
+        ]
+      }
+    ]
+  }
+}
+
+### Update product
+PUT {{baseUrl}}/api/productos/{{id}}
+Content-Type: application/json
+
+{
+  "data": {
+    "nombre": "Bodí Mariposas Mágicas (0-3 meses)",
+    "precio": 29.99
+  }
+}
+
+### Delete product
+DELETE {{baseUrl}}/api/productos/{{id}}
 GET {{baseUrl}}/api/productos/{{id}}?populate=*
 
 ### Obtener producto por ID

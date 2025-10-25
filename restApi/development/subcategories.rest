@@ -1,24 +1,21 @@
 # Subcategoria REST API
 @baseUrl=http://localhost:1337
-@id=exampleSubcategoryId12345
-@categoriaId=exampleCategoryId12345
+@id=gf6t1uhyeavusac8eyqo0b0s
+@categoriaId=viv04z4bste7wdz9ibkcgy61
 
-### Listar todas las subcategorías
+### List all subcategories
 GET {{baseUrl}}/api/subcategorias
 
-### Listar subcategorías con filtros (por categoría)
-GET {{baseUrl}}/api/subcategorias?filters[categoria][id][$eq]={{categoriaId}}
-
-### Listar subcategorías con populate de categoría
+### List subcategories with populated category
 GET {{baseUrl}}/api/subcategorias?populate=categoria
 
-### Obtener subcategoría por ID
+### Get subcategory by ID
 GET {{baseUrl}}/api/subcategorias/{{id}}
 
-### Obtener subcategoría con su categoría relacionada
+### Get subcategory with populated category
 GET {{baseUrl}}/api/subcategorias/{{id}}?populate=categoria
 
-### Crear nueva subcategoría
+### Create new subcategory "Not authorized"
 POST {{baseUrl}}/api/subcategorias
 Content-Type: application/json
 
@@ -29,7 +26,7 @@ Content-Type: application/json
   }
 }
 
-### Crear subcategoría con relación a categoría
+### Create subcategory with relation to category "Not authorized"
 POST {{baseUrl}}/api/subcategorias
 Content-Type: application/json
 
@@ -41,7 +38,7 @@ Content-Type: application/json
   }
 }
 
-### Actualizar subcategoría
+### Update subcategory "Not authorized"
 PUT {{baseUrl}}/api/subcategorias/{{id}}
 Content-Type: application/json
 
@@ -52,7 +49,7 @@ Content-Type: application/json
   }
 }
 
-### Actualizar subcategoría y cambiar su categoría
+### Update subcategory and change its category "Not authorized"
 PUT {{baseUrl}}/api/subcategorias/{{id}}
 Content-Type: application/json
 
@@ -63,5 +60,5 @@ Content-Type: application/json
   }
 }
 
-### Eliminar subcategoría
+### Delete subcategory "Not authorized"
 DELETE {{baseUrl}}/api/subcategorias/{{id}}

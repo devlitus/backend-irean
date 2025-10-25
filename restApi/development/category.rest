@@ -1,17 +1,17 @@
-# Categoria REST API
+# Category REST API
 @baseUrl=http://localhost:1337
-@id=fwke0dxrjfzxpsr06pi3xj84
+@id=w1ronmdbir6kz368vp3g93rv
 
-### Listar todas las categorías
+### List all categories
 GET {{baseUrl}}/api/categorias
 
-### Listar todas las categorías con relaciones pobladas
+### List all categories with populated relations
 GET {{baseUrl}}/api/categorias?populate=*
 
-### Obtener categoría por ID
+### Get category by ID
 GET {{baseUrl}}/api/categorias/{{id}}
 
-### Crear nueva categoría
+### Create new category "Not authorized"
 POST {{baseUrl}}/api/categorias
 Content-Type: application/json
 
@@ -22,7 +22,7 @@ Content-Type: application/json
   }
 }
 
-### Actualizar categoría
+### Update category "Not authorized"
 PUT {{baseUrl}}/api/categorias/{{id}}
 Content-Type: application/json
 
@@ -33,5 +33,5 @@ Content-Type: application/json
   }
 }
 
-### Eliminar categoría
+### Delete category "Not authorized"
 DELETE {{baseUrl}}/api/categorias/{{id}}
