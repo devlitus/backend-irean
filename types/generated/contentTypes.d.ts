@@ -452,7 +452,7 @@ export interface ApiCategoriaCategoria extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     nombre: Schema.Attribute.String & Schema.Attribute.Required;
-    producto: Schema.Attribute.Relation<'oneToOne', 'api::producto.producto'>;
+    productos: Schema.Attribute.Relation<'oneToMany', 'api::producto.producto'>;
     publishedAt: Schema.Attribute.DateTime;
     subcategorias: Schema.Attribute.Relation<
       'oneToMany',
@@ -477,7 +477,7 @@ export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
   attributes: {
     badge: Schema.Attribute.Enumeration<['nuevo', 'popular', 'oferta']>;
     categoria: Schema.Attribute.Relation<
-      'oneToOne',
+      'manyToOne',
       'api::categoria.categoria'
     >;
     createdAt: Schema.Attribute.DateTime;

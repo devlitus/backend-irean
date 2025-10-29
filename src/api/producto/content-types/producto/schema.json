@@ -43,9 +43,9 @@
     },
     "categoria": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "api::categoria.categoria",
-      "mappedBy": "producto"
+      "inversedBy": "productos"
     },
     "subcategorias": {
       "type": "relation",

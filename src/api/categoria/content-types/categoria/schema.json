@@ -24,11 +24,11 @@
       "target": "api::subcategoria.subcategoria",
       "mappedBy": "categoria"
     },
-    "producto": {
+    "productos": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "oneToMany",
       "target": "api::producto.producto",
-      "inversedBy": "categoria"
+      "mappedBy": "categoria"
     }
   }
 }

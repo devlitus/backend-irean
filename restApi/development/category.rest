@@ -10,28 +10,3 @@ GET {{baseUrl}}/api/categorias?populate=*
 
 ### Get category by ID
 GET {{baseUrl}}/api/categorias/{{id}}
-
-### Create new category "Not authorized"
-POST {{baseUrl}}/api/categorias
-Content-Type: application/json
-
-{
-  "data": {
-    "nombre": "Café Arábica",
-    "descripcion": "Categoría para cafés de variedad arábica"
-  }
-}
-
-### Update category "Not authorized"
-PUT {{baseUrl}}/api/categorias/{{id}}
-Content-Type: application/json
-
-{
-  "data": {
-    "nombre": "Café Arábica Premium",
-    "descripcion": "Categoría actualizada para cafés premium de variedad arábica"
-  }
-}
-
-### Delete category "Not authorized"
-DELETE {{baseUrl}}/api/categorias/{{id}}
