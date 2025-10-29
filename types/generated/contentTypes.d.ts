@@ -475,6 +475,7 @@ export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    badge: Schema.Attribute.Enumeration<['nuevo', 'popular', 'oferta']>;
     categoria: Schema.Attribute.Relation<
       'oneToOne',
       'api::categoria.categoria'

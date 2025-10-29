@@ -68,6 +68,14 @@
         "children",
         "youth"
       ]
+    },
+    "badge": {
+      "type": "enumeration",
+      "enum": [
+        "nuevo",
+        "popular",
+        "oferta"
+      ]
     }
   }
 }
