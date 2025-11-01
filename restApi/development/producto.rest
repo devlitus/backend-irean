@@ -2,19 +2,13 @@
 @id=lihec8py7e9qtqppcsw1xz23
 
 ### List all products
-GET {{baseUrl}}/api/productos
-
-### List all products
-GET {{baseUrl}}/api/productos
+GET {{baseUrl}}/api/products
 
 ### Get product by ID with populated relations
-GET {{baseUrl}}/api/productos/{{id}}?populate=*
+GET {{baseUrl}}/api/products/{{id}}?populate=*
 
 ### Get product by ID
-GET {{baseUrl}}/api/productos/{{id}}
+GET {{baseUrl}}/api/products/{{id}}
 
-
-### Obtener producto por ID
-GET {{baseUrl}}/api/productos/{{id}}
 
 

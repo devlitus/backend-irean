@@ -3,10 +3,10 @@
 @id=w1ronmdbir6kz368vp3g93rv
 
 ### List all categories
-GET {{baseUrl}}/api/categorias
+GET {{baseUrl}}/api/categories
 
 ### List all categories with populated relations
-GET {{baseUrl}}/api/categorias?populate=*
+GET {{baseUrl}}/api/categories?populate=*
 
 ### Get category by ID
-GET {{baseUrl}}/api/categorias/{{id}}
+GET {{baseUrl}}/api/categories/{{id}}
