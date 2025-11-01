@@ -1,0 +1,105 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "product"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "price": {
+      "type": "decimal",
+      "required": true
+    },
+    "discount_price": {
+      "type": "decimal"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "products"
+    },
+    "subcategories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subcategory.subcategory",
+      "mappedBy": "product"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "stock": {
+      "type": "integer",
+      "required": true
+    },
+    "sold": {
+      "type": "boolean"
+    },
+    "visible": {
+      "type": "boolean",
+      "default": true
+    },
+    "seo_title": {
+      "type": "string"
+    },
+    "seo_description": {
+      "type": "string"
+    },
+    "years": {
+      "type": "enumeration",
+      "enum": [
+        "newbor_infant",
+        "newbor_toddler",
+        "children",
+        "youth"
+      ]
+    },
+    "gender": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "boy",
+        "girl"
+      ]
+    },
+    "badge": {
+      "type": "enumeration",
+      "enum": [
+        "new",
+        "favorite",
+        "outlet"
+      ]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "outfit",
+        "pelele",
+        "dress"
+      ]
+    }
+  }
+}

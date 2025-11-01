@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subcategories",
+  "info": {
+    "singularName": "subcategory",
+    "pluralName": "subcategories",
+    "displayName": "subcategory"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "langauge": {
+      "type": "enumeration",
+      "enum": [
+        "es",
+        "en",
+        "ca"
+      ]
+    },
+    "visible": {
+      "type": "boolean"
+    },
+    "tag": {
+      "type": "enumeration",
+      "enum": [
+        "outfit",
+        "pelele",
+        "dress"
+      ]
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "subcategories"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "subcategories"
+    }
+  }
+}
