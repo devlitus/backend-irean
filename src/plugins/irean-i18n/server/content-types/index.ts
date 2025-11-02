@@ -1,4 +1,4 @@
-const locale = require("./locale/schema.json");
+import locale from "./locale";
 
 export default {
   locale,

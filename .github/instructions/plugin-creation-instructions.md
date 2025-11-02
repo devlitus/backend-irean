@@ -51,10 +51,10 @@ Crea un plugin local cuando necesites:
 npm run develop
 
 # Probar endpoints (usar REST Client o Postman)
-GET http://localhost:1337/api/i18n/locales
-POST http://localhost:1337/api/i18n/locales
-PUT http://localhost:1337/api/i18n/locales/:id
-DELETE http://localhost:1337/api/i18n/locales/:id
+GET http://localhost:1337/api/irean_i18n/locales
+POST http://localhost:1337/api/irean_i18n/locales
+PUT http://localhost:1337/api/irean_i18n/locales/:id
+DELETE http://localhost:1337/api/irean_i18n/locales/:id
 ```
 
 ---

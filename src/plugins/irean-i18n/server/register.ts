@@ -1,5 +1,7 @@
-export default ({ strapi }) => {
-  // 1. Registrar permisos del plugin
+import type { Core } from "@strapi/strapi";
+
+export default ({ strapi }: { strapi: Core.Strapi }) => {
+  // Registrar permisos del plugin
   const actions = [
     {
       section: "plugins",

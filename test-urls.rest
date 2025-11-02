@@ -1,0 +1,13 @@
+@baseUrl = http://localhost:1337
+
+### Opción 1: Sin prefijo /api
+GET {{baseUrl}}/irean-i18n/locales
+
+### Opción 2: Con prefijo /api
+GET {{baseUrl}}/api/irean-i18n/locales
+
+### Opción 3: Como content-type
+GET {{baseUrl}}/api/plugin-irean-i18n-locales
+
+### Opción 4: Ruta de admin
+GET {{baseUrl}}/admin/irean-i18n/locales

@@ -1,0 +1,200 @@
+### Fase 3 Testing - Content Type Integration
+
+@baseUrl = http://localhost:1337
+@productId =
+
+### ============================================
+### 1. VERIFICAR LOCALES DISPONIBLES
+### ============================================
+
+### Listar todos los locales disponibles
+GET {{baseUrl}}/api/irean-i18n/locales
+
+### ============================================
+### 2. CREAR PRODUCTOS CON DIFERENTES LOCALES
+### ============================================
+
+### 2.1 Crear Producto en Español (locale por defecto)
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Camiseta Azul Bebé",
+    "description": "Una camiseta cómoda y suave para bebés",
+    "price": 29.99,
+    "stock": 100,
+    "gender": "boy",
+    "locale": "es"
+  }
+}
+
+### 2.2 Crear Producto en Inglés (misma traducción)
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Baby Blue Shirt",
+    "description": "A comfortable and soft shirt for babies",
+    "price": 29.99,
+    "stock": 100,
+    "gender": "boy",
+    "locale": "en"
+  }
+}
+
+### 2.3 Crear Producto en Catalán
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Samarreta Blava de Bebè",
+    "description": "Una samarreta còmoda i suau per a bebès",
+    "price": 29.99,
+    "stock": 100,
+    "gender": "boy",
+    "locale": "ca"
+  }
+}
+
+### 2.4 Crear Producto SIN especificar locale (debe asignarse el default 'es')
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Pantalón Verde Bebé",
+    "description": "Pantalón cómodo para bebés",
+    "price": 39.99,
+    "stock": 50,
+    "gender": "girl"
+  }
+}
+
+### ============================================
+### 3. FILTRAR PRODUCTOS POR LOCALE
+### ============================================
+
+### 3.1 Obtener todos los productos en español
+GET {{baseUrl}}/api/products?locale=es
+
+### 3.2 Obtener todos los productos en inglés
+GET {{baseUrl}}/api/products?locale=en
+
+### 3.3 Obtener todos los productos en catalán
+GET {{baseUrl}}/api/products?locale=ca
+
+### 3.4 Obtener todos los productos sin especificar locale
+### (debería devolver los del locale default o todos)
+GET {{baseUrl}}/api/products
+
+### ============================================
+### 4. VERIFICAR CAMPOS locale Y localizations
+### ============================================
+
+### 4.1 Obtener producto con detalles completos (incluyendo locale)
+GET {{baseUrl}}/api/products?locale=es&populate=*
+
+### 4.2 Obtener producto con su relación localizations
+GET {{baseUrl}}/api/products?locale=es&populate[localizations]=*
+
+### ============================================
+### 5. TESTING CON CATEGORÍAS
+### ============================================
+
+### 5.1 Crear Categoría en Español
+POST {{baseUrl}}/api/categories
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Ropa de Bebé",
+    "description": "Toda la ropa para bebés",
+    "locale": "es"
+  }
+}
+
+### 5.2 Crear Categoría en Inglés
+POST {{baseUrl}}/api/categories
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Baby Clothes",
+    "description": "All baby clothing",
+    "locale": "en"
+  }
+}
+
+### 5.3 Filtrar categorías por locale
+GET {{baseUrl}}/api/categories?locale=es
+
+### ============================================
+### 6. TESTING CON SUBCATEGORÍAS
+### ============================================
+
+### 6.1 Crear Subcategoría en Español
+POST {{baseUrl}}/api/subcategories
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Camisetas",
+    "description": "Camisetas para bebés",
+    "locale": "es"
+  }
+}
+
+### 6.2 Crear Subcategoría en Inglés
+POST {{baseUrl}}/api/subcategories
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Shirts",
+    "description": "Shirts for babies",
+    "locale": "en"
+  }
+}
+
+### 6.3 Filtrar subcategorías por locale
+GET {{baseUrl}}/api/subcategories?locale=es
+
+### ============================================
+### 7. ERRORES ESPERADOS
+### ============================================
+
+### 7.1 Intentar crear producto con locale inválido (debe fallar)
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Producto Prueba",
+    "description": "Test",
+    "price": 25.00,
+    "stock": 10,
+    "gender": "boy",
+    "locale": "fr"
+  }
+}
+
+### ============================================
+### RESUMEN DE VERIFICACIONES
+### ============================================
+###
+### ✅ VERIFICAR QUE:
+###
+### 1. [GET /api/products?locale=es] devuelve productos españoles
+### 2. [GET /api/products?locale=en] devuelve productos en inglés
+### 3. [GET /api/products?locale=ca] devuelve productos en catalán
+### 4. [POST /api/products] sin locale usa el locale default (es)
+### 5. [POST /api/products] con locale="fr" falla (locale no existe)
+### 6. Todos los productos tienen campo "locale" en la respuesta
+### 7. Todos los productos pueden tener relación "localizations"
+### 8. Las categorías y subcategorías también respetan los locales
+###
+### Si todas estas verificaciones pasan ✅, entonces Fase 3 está
+### funcionando correctamente.

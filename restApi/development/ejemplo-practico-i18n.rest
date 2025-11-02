@@ -1,0 +1,310 @@
+### EJEMPLO PRÁCTICO: Plugin irean-i18n
+### Este archivo muestra paso a paso cómo funciona el plugin
+
+@baseUrl = http://localhost:1337
+
+### ============================================
+### PASO 0: Verificar que los locales existen
+### ============================================
+
+### GET Verificar locales disponibles
+GET {{baseUrl}}/irean-i18n/locales
+
+###
+### Resultado esperado:
+### [
+###   { "id": 1, "code": "es", "name": "Español", "isDefault": true },
+###   ... (en, ca si los agregaste)
+### ]
+###
+
+
+### ============================================
+### PASO 1: CREAR PRODUCTO EN ESPAÑOL
+### ============================================
+
+### Crear: Camiseta Azul en Español
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Camiseta Azul Bebé",
+    "description": "Una camiseta cómoda y suave para bebés recién nacidos",
+    "price": 24.99,
+    "stock": 150,
+    "gender": "boy",
+    "locale": "es"
+  }
+}
+
+###
+### Guarda el ID de la respuesta, será algo como:
+### { "id": 1, "locale": "es", ... }
+###
+
+@productEsId = 1
+
+
+### ============================================
+### PASO 2: CREAR PRODUCTO EN INGLÉS
+### ============================================
+
+### Crear: Misma camiseta pero en Inglés
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Blue Baby Shirt",
+    "description": "A comfortable and soft shirt for newborn babies",
+    "price": 24.99,
+    "stock": 150,
+    "gender": "boy",
+    "locale": "en"
+  }
+}
+
+###
+### Guarda el ID: será algo como:
+### { "id": 2, "locale": "en", ... }
+###
+
+@productEnId = 2
+
+
+### ============================================
+### PASO 3: CREAR PRODUCTO EN CATALÁN
+### ============================================
+
+### Crear: Misma camiseta pero en Catalán
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Samarreta Blava de Bebè",
+    "description": "Una samarreta còmoda i suau per a bebès acabats de néixer",
+    "price": 24.99,
+    "stock": 150,
+    "gender": "boy",
+    "locale": "ca"
+  }
+}
+
+###
+### Guarda el ID: será algo como:
+### { "id": 3, "locale": "ca", ... }
+###
+
+@productCaId = 3
+
+
+### ============================================
+### PASO 4: VINCULAR LAS TRADUCCIONES (OPCIONAL)
+### ============================================
+
+### Actualizar Producto Español: agregar relación a inglés y catalán
+PUT {{baseUrl}}/api/products/1
+Content-Type: application/json
+
+{
+  "data": {
+    "localizations": [2, 3]
+  }
+}
+
+###
+### Ahora el producto en español SABE que tiene traducciones en inglés y catalán
+###
+
+
+### ============================================
+### PASO 5: FILTRAR POR LOCALE - VER SOLO ESPAÑOLES
+### ============================================
+
+### Obtener SOLO productos en español
+GET {{baseUrl}}/api/products?locale=es
+
+###
+### Resultado esperado:
+### [
+###   {
+###     "id": 1,
+###     "name": "Camiseta Azul Bebé",
+###     "price": 24.99,
+###     "locale": "es",
+###     "localizations": [2, 3]
+###   }
+### ]
+###
+### ⚠️ IMPORTANTE: Solo devuelve el producto 1 (español)
+### Los productos 2 (inglés) y 3 (catalán) NO aparecen
+###
+
+
+### ============================================
+### PASO 6: FILTRAR POR LOCALE - VER SOLO INGLESES
+### ============================================
+
+### Obtener SOLO productos en inglés
+GET {{baseUrl}}/api/products?locale=en
+
+###
+### Resultado esperado:
+### [
+###   {
+###     "id": 2,
+###     "name": "Blue Baby Shirt",
+###     "price": 24.99,
+###     "locale": "en"
+###   }
+### ]
+###
+### ⚠️ Solo devuelve el producto 2 (inglés)
+###
+
+
+### ============================================
+### PASO 7: FILTRAR POR LOCALE - VER SOLO CATALANES
+### ============================================
+
+### Obtener SOLO productos en catalán
+GET {{baseUrl}}/api/products?locale=ca
+
+###
+### Resultado esperado:
+### [
+###   {
+###     "id": 3,
+###     "name": "Samarreta Blava de Bebè",
+###     "price": 24.99,
+###     "locale": "ca"
+###   }
+### ]
+###
+
+
+### ============================================
+### PASO 8: VER PRODUCTO CON TODAS SUS TRADUCCIONES
+### ============================================
+
+### Obtener producto español CON sus traducciones
+GET {{baseUrl}}/api/products/1?populate[localizations]=*
+
+###
+### Resultado esperado:
+### {
+###   "id": 1,
+###   "name": "Camiseta Azul Bebé",
+###   "locale": "es",
+###   "price": 24.99,
+###   "localizations": [
+###     {
+###       "id": 2,
+###       "name": "Blue Baby Shirt",
+###       "locale": "en",
+###       "price": 24.99
+###     },
+###     {
+###       "id": 3,
+###       "name": "Samarreta Blava de Bebè",
+###       "locale": "ca",
+###       "price": 24.99
+###     }
+###   ]
+### }
+###
+### ⚠️ Ahora VES todas las traducciones dentro del objeto!
+###
+
+
+### ============================================
+### PASO 9: CREAR PRODUCTO SIN ESPECIFICAR LOCALE
+### ============================================
+
+### Crear producto SIN indicar locale
+### Debería asignar automáticamente "es" (locale por defecto)
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Pantalón Verde Bebé",
+    "description": "Pantalón cómodo para bebés",
+    "price": 34.99,
+    "stock": 80,
+    "gender": "girl"
+  }
+}
+
+###
+### Resultado esperado:
+### El servidor AUTOMÁTICAMENTE asigna locale: "es"
+### (porque es el locale por defecto)
+###
+
+
+### ============================================
+### PASO 10: INTENTAR CREAR CON LOCALE INVÁLIDO
+### ============================================
+
+### Intentar crear con locale que NO existe (debe fallar)
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "Test Producto",
+    "description": "Test",
+    "price": 10.00,
+    "stock": 50,
+    "gender": "boy",
+    "locale": "fr"
+  }
+}
+
+###
+### Resultado esperado: ERROR
+### "Locale fr does not exist"
+###
+### El plugin valida que el locale exista en la BD
+###
+
+
+### ============================================
+### RESUMEN DE LO QUE VIMOS
+### ============================================
+
+###
+### ✅ FUNCIONALIDADES DEL PLUGIN:
+###
+### 1. Crear productos en diferentes idiomas (es, en, ca)
+### 2. Cada producto tiene su PROPIO registro en BD
+### 3. El campo "locale" indica en qué idioma está
+### 4. Puedes FILTRAR por locale: ?locale=es
+### 5. Puedes VINCULAR traducciones: localizations: [2, 3]
+### 6. Puedes VER todas las traducciones: ?populate[localizations]=*
+### 7. Si no especificas locale, se asigna automáticamente (es)
+### 8. Si usas un locale inválido, falla la creación
+###
+### 🎯 VENTAJAS:
+###
+### - Precio/Stock/Imágenes NO se duplican (están en TODOS los registros)
+### - Nombre/Descripción SÍ se traducen (uno por idioma)
+### - Fácil filtrar por idioma desde el frontend
+### - Fácil mantener traducciones actualizadas
+###
+### 📊 BASE DE DATOS:
+###
+### Tabla products (tendrá 3 registros):
+### ┌────┬────────────────────┬────────┬────────┬────────┐
+### │ id │ name               │ price  │ stock  │ locale │
+### ├────┼────────────────────┼────────┼────────┼────────┤
+### │ 1  │ Camiseta Azul      │ 24.99  │ 150    │ es     │
+### │ 2  │ Blue Baby Shirt    │ 24.99  │ 150    │ en     │
+### │ 3  │ Samarreta Blava    │ 24.99  │ 150    │ ca     │
+### │ 4  │ Pantalón Verde     │ 34.99  │ 80     │ es     │
+### └────┴────────────────────┴────────┴────────┴────────┘
+###
+### ¡LISTO! Ahora entiende cómo funciona el plugin 🎉

@@ -1,0 +1,11 @@
+{
+  "name": "strapi-plugin-irean-i18n",
+  "version": "1.0.0",
+  "description": "Plugin de internacionalización para Irean e-commerce",
+  "strapi": {
+    "name": "irean-i18n",
+    "displayName": "Irean i18n",
+    "description": "Traducción dinámica de productos y categorías (ES, EN, CA)",
+    "kind": "plugin"
+  }
+}

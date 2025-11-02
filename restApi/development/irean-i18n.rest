@@ -1,0 +1,43 @@
+### Test endpoints for irean-i18n plugin - Fase 1
+
+@baseUrl = http://localhost:1337
+
+### 1. GET - Listar todos los locales
+GET {{baseUrl}}/irean-i18n/locales
+
+### 2. POST - Crear un nuevo locale (English)
+POST {{baseUrl}}/irean-i18n/locales
+Content-Type: application/json
+
+{
+  "code": "en",
+  "name": "English",
+  "isDefault": false
+}
+
+### 3. POST - Crear un nuevo locale (Catalan)
+POST {{baseUrl}}/irean-i18n/locales
+Content-Type: application/json
+
+{
+  "code": "ca",
+  "name": "Català",
+  "isDefault": false
+}
+
+### 4. GET - Listar locales después de crear nuevos
+GET {{baseUrl}}/irean-i18n/locales
+
+### 5. PUT - Actualizar un locale (cambiar nombre)
+PUT {{baseUrl}}/irean-i18n/locales/1
+Content-Type: application/json
+
+{
+  "name": "English (Updated)"
+}
+
+### 6. DELETE - Eliminar un locale no-default
+DELETE {{baseUrl}}/irean-i18n/locales/2
+
+### 7. DELETE - Intentar eliminar locale default (debe fallar)
+DELETE {{baseUrl}}/irean-i18n/locales/1

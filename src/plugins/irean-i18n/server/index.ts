@@ -4,6 +4,8 @@ import controllers from "./controllers";
 import services from "./services";
 import routes from "./routes";
 import contentTypes from "./content-types";
+import middlewares from "./middlewares";
+import policies from "./policies";
 
 export default {
   bootstrap,
@@ -12,4 +14,6 @@ export default {
   services,
   routes,
   contentTypes,
+  middlewares,
+  policies,
 };

@@ -12,7 +12,6 @@
     "seed:example": "node ./scripts/seed.js",
     "seed:production": "cross-env NODE_ENV=production ENV_PATH=.env.production strapi ts:generate-types && node ./scripts/seed-production.js",
     "start": "cross-env NODE_ENV=production ENV_PATH=.env.production strapi start",
-    "start:dev": "cross-env NODE_ENV=development ENV_PATH=.env.development strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
     "upgrade:dry": "npx @strapi/upgrade latest --dry"
