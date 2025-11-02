@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "i18n_locales",
+  "info": {
+    "singularName": "locale",
+    "pluralName": "locales",
+    "displayName": "Locale",
+    "description": "Internationalization locale"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": false
+    },
+    "content-type-builder": {
+      "visible": false
+    }
+  },
+  "attributes": {
+    "code": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 10
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 50
+    },
+    "isDefault": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

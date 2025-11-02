@@ -6,8 +6,9 @@ This guide is complemented by:
 
 1. **This file** (`.github/copilot-instructions.md`) - Project conventions, architecture, workflows, database, deployment
 2. **[`instructions/strapi-instructions.md`](./instructions/strapi-instructions.md)** - Strapi-specific patterns: controllers, services, routes, schemas, best practices
+3. **[`instructions/plugin-creation-instructions.md`](./instructions/plugin-creation-instructions.md)** - Local plugin development: structure, server/admin API, i18n implementation guide
 
-Consult both files for complete and up-to-date information.
+Consult all files for complete and up-to-date information.
 
 ---
 
