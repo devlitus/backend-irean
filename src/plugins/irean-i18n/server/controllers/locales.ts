@@ -6,7 +6,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
    */
   async listLocales(ctx) {
     try {
-      const locales = await strapi.plugin("i18n").service("locales").find();
+      const locales = await strapi.plugin("irean-i18n").service("locales").find();
 
       ctx.body = { data: locales };
     } catch (error) {
@@ -28,7 +28,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
       // Crear locale
       const locale = await strapi
-        .plugin("i18n")
+        .plugin("irean-i18n")
         .service("locales")
         .create(body);
 
@@ -50,7 +50,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
     try {
       const locale = await strapi
-        .plugin("i18n")
+        .plugin("irean-i18n")
         .service("locales")
         .update(id, body);
 
@@ -73,7 +73,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     try {
       // Verificar que no sea el locale por defecto
       const locale = await strapi
-        .plugin("i18n")
+        .plugin("irean-i18n")
         .service("locales")
         .findById(id);
 
@@ -85,7 +85,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
         return ctx.badRequest("Cannot delete default locale");
       }
 
-      await strapi.plugin("i18n").service("locales").delete(id);
+      await strapi.plugin("irean-i18n").service("locales").delete(id);
 
       ctx.body = { data: { id } };
     } catch (error) {

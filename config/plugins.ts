@@ -1,7 +1,7 @@
 export default () => ({
-  i18n: {
+  "irean-i18n": {
     enabled: true,
-    resolve: "./src/plugins/i18n",
+    resolve: "./dist/src/plugins/irean-i18n",
     config: {
       defaultLocale: "es",
       locales: ["es", "en", "ca"],

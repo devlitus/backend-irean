@@ -5,7 +5,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
    * Obtener todos los locales
    */
   async find() {
-    const locales = await strapi.db.query("plugin::i18n.locale").findMany({
+    const locales = await strapi.db.query("plugin::irean-i18n.locale").findMany({
       orderBy: { code: "asc" },
     });
 
@@ -16,7 +16,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
    * Buscar locale por ID
    */
   async findById(id: string) {
-    const locale = await strapi.db.query("plugin::i18n.locale").findOne({
+    const locale = await strapi.db.query("plugin::irean-i18n.locale").findOne({
       where: { id },
     });
 
@@ -27,7 +27,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
    * Buscar locale por código
    */
   async findByCode(code: string) {
-    const locale = await strapi.db.query("plugin::i18n.locale").findOne({
+    const locale = await strapi.db.query("plugin::irean-i18n.locale").findOne({
       where: { code },
     });
 
@@ -48,14 +48,14 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
     // Si es default, quitar default de los demás
     if (isDefault) {
-      await strapi.db.query("plugin::i18n.locale").updateMany({
+      await strapi.db.query("plugin::irean-i18n.locale").updateMany({
         where: {},
         data: { isDefault: false },
       });
     }
 
     // Crear locale
-    const locale = await strapi.db.query("plugin::i18n.locale").create({
+    const locale = await strapi.db.query("plugin::irean-i18n.locale").create({
       data: {
         code,
         name,
@@ -74,13 +74,13 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
     // Si se establece como default, quitar default de los demás
     if (isDefault) {
-      await strapi.db.query("plugin::i18n.locale").updateMany({
+      await strapi.db.query("plugin::irean-i18n.locale").updateMany({
         where: { id: { $ne: id } },
         data: { isDefault: false },
       });
     }
 
-    const locale = await strapi.db.query("plugin::i18n.locale").update({
+    const locale = await strapi.db.query("plugin::irean-i18n.locale").update({
       where: { id },
       data,
     });
@@ -98,7 +98,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
       throw new Error("Cannot delete default locale");
     }
 
-    await strapi.db.query("plugin::i18n.locale").delete({
+    await strapi.db.query("plugin::irean-i18n.locale").delete({
       where: { id },
     });
 
@@ -109,7 +109,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
    * Obtener locale por defecto
    */
   async getDefaultLocale() {
-    const locale = await strapi.db.query("plugin::i18n.locale").findOne({
+    const locale = await strapi.db.query("plugin::irean-i18n.locale").findOne({
       where: { isDefault: true },
     });
 

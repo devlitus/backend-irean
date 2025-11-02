@@ -9,7 +9,7 @@ export default [
         {
           name: "admin::hasPermissions",
           config: {
-            actions: ["plugin::i18n.locale.read"],
+            actions: ["plugin::irean-i18n.locale.read"],
           },
         },
       ],
@@ -25,7 +25,7 @@ export default [
         {
           name: "admin::hasPermissions",
           config: {
-            actions: ["plugin::i18n.locale.create"],
+            actions: ["plugin::irean-i18n.locale.create"],
           },
         },
       ],
@@ -41,7 +41,7 @@ export default [
         {
           name: "admin::hasPermissions",
           config: {
-            actions: ["plugin::i18n.locale.update"],
+            actions: ["plugin::irean-i18n.locale.update"],
           },
         },
       ],
@@ -57,7 +57,7 @@ export default [
         {
           name: "admin::hasPermissions",
           config: {
-            actions: ["plugin::i18n.locale.delete"],
+            actions: ["plugin::irean-i18n.locale.delete"],
           },
         },
       ],

@@ -22,19 +22,19 @@ Crea un plugin local cuando necesites:
 
 **Archivos a crear**:
 
-- ✅ `src/plugins/i18n/strapi-server.ts` - Entry point del server
-- ✅ `src/plugins/i18n/package.json` - Metadata del plugin
-- ✅ `src/plugins/i18n/server/index.ts` - Exporta módulos del server
-- ✅ `src/plugins/i18n/server/content-types/locale/schema.json` - Schema del locale
-- ✅ `src/plugins/i18n/server/content-types/index.ts` - Exporta content types
-- ✅ `src/plugins/i18n/server/services/locales.ts` - Service CRUD de locales
-- ✅ `src/plugins/i18n/server/services/index.ts` - Exporta services
-- ✅ `src/plugins/i18n/server/controllers/locales.ts` - Controller de locales
-- ✅ `src/plugins/i18n/server/controllers/index.ts` - Exporta controllers
-- ✅ `src/plugins/i18n/server/routes/admin.ts` - Rutas del admin
-- ✅ `src/plugins/i18n/server/routes/index.ts` - Exporta routes
-- ✅ `src/plugins/i18n/server/bootstrap.ts` - Inicialización del plugin
-- ✅ `src/plugins/i18n/server/register.ts` - Registro de permisos
+- ✅ `src/plugins/irean-i18n/strapi-server.ts` - Entry point del server
+- ✅ `src/plugins/irean-i18n/package.json` - Metadata del plugin
+- ✅ `src/plugins/irean-i18n/server/index.ts` - Exporta módulos del server
+- ✅ `src/plugins/irean-i18n/server/content-types/locale/schema.json` - Schema del locale
+- ✅ `src/plugins/irean-i18n/server/content-types/index.ts` - Exporta content types
+- ✅ `src/plugins/irean-i18n/server/services/locales.ts` - Service CRUD de locales
+- ✅ `src/plugins/irean-i18n/server/services/index.ts` - Exporta services
+- ✅ `src/plugins/irean-i18n/server/controllers/locales.ts` - Controller de locales
+- ✅ `src/plugins/irean-i18n/server/controllers/index.ts` - Exporta controllers
+- ✅ `src/plugins/irean-i18n/server/routes/admin.ts` - Rutas del admin
+- ✅ `src/plugins/irean-i18n/server/routes/index.ts` - Exporta routes
+- ✅ `src/plugins/irean-i18n/server/bootstrap.ts` - Inicialización del plugin
+- ✅ `src/plugins/irean-i18n/server/register.ts` - Registro de permisos
 - ✅ `config/plugins.ts` - Configuración del plugin en el proyecto
 
 **Criterio de éxito**:
@@ -65,12 +65,12 @@ DELETE http://localhost:1337/api/i18n/locales/:id
 
 **Archivos a crear**:
 
-- ✅ `src/plugins/i18n/strapi-admin.ts` - Entry point del admin
-- ✅ `src/plugins/i18n/admin/src/index.tsx` - Registro del plugin en el admin
-- ✅ `src/plugins/i18n/admin/src/pluginId.ts` - ID del plugin
-- ✅ `src/plugins/i18n/admin/src/hooks/useLocales.ts` - Hook para obtener locales
-- ✅ `src/plugins/i18n/admin/src/pages/Settings/index.tsx` - Página de configuración
-- ✅ `src/plugins/i18n/admin/src/components/LocalePicker/index.tsx` - Selector de locale (opcional)
+- ✅ `src/plugins/irean-i18n/strapi-admin.ts` - Entry point del admin
+- ✅ `src/plugins/irean-i18n/admin/src/index.tsx` - Registro del plugin en el admin
+- ✅ `src/plugins/irean-i18n/admin/src/pluginId.ts` - ID del plugin
+- ✅ `src/plugins/irean-i18n/admin/src/hooks/useLocales.ts` - Hook para obtener locales
+- ✅ `src/plugins/irean-i18n/admin/src/pages/Settings/index.tsx` - Página de configuración
+- ✅ `src/plugins/irean-i18n/admin/src/components/LocalePicker/index.tsx` - Selector de locale (opcional)
 
 **Criterio de éxito**:
 
@@ -102,12 +102,12 @@ npm run develop
 
 **Archivos a crear**:
 
-- ✅ `src/plugins/i18n/server/services/core-api.ts` - Service para extender Core API
-- ✅ Actualizar `src/plugins/i18n/server/services/index.ts` - Exportar core-api service
-- ✅ Actualizar `src/plugins/i18n/server/bootstrap.ts` - Llamar a extendCoreApi()
-- ✅ Actualizar `src/plugins/i18n/server/register.ts` - Extender schemas de content types
-- ✅ `src/plugins/i18n/server/middlewares/locale-handler.ts` - Middleware para detectar locale
-- ✅ `src/plugins/i18n/server/middlewares/index.ts` - Exportar middlewares
+- ✅ `src/plugins/irean-i18n/server/services/core-api.ts` - Service para extender Core API
+- ✅ Actualizar `src/plugins/irean-i18n/server/services/index.ts` - Exportar core-api service
+- ✅ Actualizar `src/plugins/irean-i18n/server/bootstrap.ts` - Llamar a extendCoreApi()
+- ✅ Actualizar `src/plugins/irean-i18n/server/register.ts` - Extender schemas de content types
+- ✅ `src/plugins/irean-i18n/server/middlewares/locale-handler.ts` - Middleware para detectar locale
+- ✅ `src/plugins/irean-i18n/server/middlewares/index.ts` - Exportar middlewares
 
 **Modificar content types existentes**:
 
@@ -213,7 +213,7 @@ GET /api/productos/:id?populate[localizations]=*
 
 ```
 src/plugins/
-└── i18n/
+└── irean-i18n/
     ├── server/
     │   ├── bootstrap.ts              # Lógica de inicialización
     │   ├── register.ts               # Registro de configuración
@@ -265,12 +265,12 @@ src/plugins/
 Los archivos entry point son obligatorios:
 
 ```typescript
-// src/plugins/i18n/strapi-server.ts
+// src/plugins/irean-i18n/strapi-server.ts
 export { default } from "./server";
 ```
 
 ```typescript
-// src/plugins/i18n/strapi-admin.ts
+// src/plugins/irean-i18n/strapi-admin.ts
 export { default } from "./admin/src";
 ```
 
@@ -278,11 +278,11 @@ export { default } from "./admin/src";
 
 ```json
 {
-  "name": "strapi-plugin-i18n",
+  "name": "strapi-plugin-irean-i18n",
   "version": "1.0.0",
   "description": "Internationalization plugin for Strapi",
   "strapi": {
-    "name": "i18n",
+    "name": "irean-i18n",
     "displayName": "Internationalization",
     "description": "Manage content in multiple languages",
     "kind": "plugin"
@@ -315,7 +315,7 @@ export default () => ({
 ### Entry Point del Server
 
 ```typescript
-// src/plugins/i18n/server/index.ts
+// src/plugins/irean-i18n/server/index.ts
 import bootstrap from "./bootstrap";
 import register from "./register";
 import config from "./config";
@@ -342,10 +342,10 @@ export default {
 Inicializa el plugin cuando Strapi arranca:
 
 ```typescript
-// src/plugins/i18n/server/bootstrap.ts
+// src/plugins/irean-i18n/server/bootstrap.ts
 export default async ({ strapi }) => {
   // 1. Verificar si existe al menos un locale
-  const localesService = strapi.plugin("i18n").service("locales");
+  const localesService = strapi.plugin("irean-i18n").service("locales");
   const existingLocales = await localesService.find();
 
   // 2. Crear locale por defecto si no existe
@@ -358,14 +358,14 @@ export default async ({ strapi }) => {
       isDefault: true,
     });
 
-    strapi.log.info(`[i18n] Created default locale: ${defaultLocale}`);
+    strapi.log.info(`[irean-i18n] Created default locale: ${defaultLocale}`);
   }
 
   // 3. Extender Core API para soportar localización
-  const coreApiService = strapi.plugin("i18n").service("core-api");
+  const coreApiService = strapi.plugin("irean-i18n").service("core-api");
   coreApiService.extendCoreApi();
 
-  strapi.log.info("[i18n] Plugin initialized successfully");
+  strapi.log.info("[irean-i18n] Plugin initialized successfully");
 };
 
 function getLocaleName(code: string): string {
@@ -383,7 +383,7 @@ function getLocaleName(code: string): string {
 Registra configuración global del plugin:
 
 ```typescript
-// src/plugins/i18n/server/register.ts
+// src/plugins/irean-i18n/server/register.ts
 export default ({ strapi }) => {
   // 1. Registrar permisos del plugin
   const actions = [
@@ -391,25 +391,25 @@ export default ({ strapi }) => {
       section: "plugins",
       displayName: "Read",
       uid: "locale.read",
-      pluginName: "i18n",
+      pluginName: "irean-i18n",
     },
     {
       section: "plugins",
       displayName: "Create",
       uid: "locale.create",
-      pluginName: "i18n",
+      pluginName: "irean-i18n",
     },
     {
       section: "plugins",
       displayName: "Update",
       uid: "locale.update",
-      pluginName: "i18n",
+      pluginName: "irean-i18n",
     },
     {
       section: "plugins",
       displayName: "Delete",
       uid: "locale.delete",
-      pluginName: "i18n",
+      pluginName: "irean-i18n",
     },
   ];
 
@@ -450,7 +450,7 @@ export default ({ strapi }) => {
 ### Controllers
 
 ```typescript
-// src/plugins/i18n/server/controllers/locales.ts
+// src/plugins/irean-i18n/server/controllers/locales.ts
 import type { Core } from "@strapi/strapi";
 
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
@@ -459,7 +459,10 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
    */
   async listLocales(ctx) {
     try {
-      const locales = await strapi.plugin("i18n").service("locales").find();
+      const locales = await strapi
+        .plugin("irean-i18n")
+        .service("locales")
+        .find();
 
       ctx.body = { data: locales };
     } catch (error) {
@@ -481,7 +484,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
       // Crear locale
       const locale = await strapi
-        .plugin("i18n")
+        .plugin("irean-i18n")
         .service("locales")
         .create(body);
 
@@ -503,7 +506,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
     try {
       const locale = await strapi
-        .plugin("i18n")
+        .plugin("irean-i18n")
         .service("locales")
         .update(id, body);
 
@@ -526,7 +529,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     try {
       // Verificar que no sea el locale por defecto
       const locale = await strapi
-        .plugin("i18n")
+        .plugin("irean-i18n")
         .service("locales")
         .findById(id);
 
@@ -538,7 +541,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
         return ctx.badRequest("Cannot delete default locale");
       }
 
-      await strapi.plugin("i18n").service("locales").delete(id);
+      await strapi.plugin("irean-i18n").service("locales").delete(id);
 
       ctx.body = { data: { id } };
     } catch (error) {
@@ -549,7 +552,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 ```
 
 ```typescript
-// src/plugins/i18n/server/controllers/index.ts
+// src/plugins/irean-i18n/server/controllers/index.ts
 import locales from "./locales";
 import contentManager from "./content-manager";
 
@@ -562,7 +565,7 @@ export default {
 ### Services
 
 ```typescript
-// src/plugins/i18n/server/services/locales.ts
+// src/plugins/irean-i18n/server/services/locales.ts
 import type { Core } from "@strapi/strapi";
 
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
@@ -570,9 +573,11 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
    * Obtener todos los locales
    */
   async find() {
-    const locales = await strapi.db.query("plugin::i18n.locale").findMany({
-      orderBy: { code: "asc" },
-    });
+    const locales = await strapi.db
+      .query("plugin::irean-i18n.locale")
+      .findMany({
+        orderBy: { code: "asc" },
+      });
 
     return locales;
   },
@@ -581,7 +586,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
    * Buscar locale por ID
    */
   async findById(id: string) {
-    const locale = await strapi.db.query("plugin::i18n.locale").findOne({
+    const locale = await strapi.db.query("plugin::irean-i18n.locale").findOne({
       where: { id },
     });
 
@@ -592,7 +597,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
    * Buscar locale por código
    */
   async findByCode(code: string) {
-    const locale = await strapi.db.query("plugin::i18n.locale").findOne({
+    const locale = await strapi.db.query("plugin::irean-i18n.locale").findOne({
       where: { code },
     });
 
@@ -613,14 +618,14 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
     // Si es default, quitar default de los demás
     if (isDefault) {
-      await strapi.db.query("plugin::i18n.locale").updateMany({
+      await strapi.db.query("plugin::irean-i18n.locale").updateMany({
         where: {},
         data: { isDefault: false },
       });
     }
 
     // Crear locale
-    const locale = await strapi.db.query("plugin::i18n.locale").create({
+    const locale = await strapi.db.query("plugin::irean-i18n.locale").create({
       data: {
         code,
         name,
@@ -639,13 +644,13 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
     // Si se establece como default, quitar default de los demás
     if (isDefault) {
-      await strapi.db.query("plugin::i18n.locale").updateMany({
+      await strapi.db.query("plugin::irean-i18n.locale").updateMany({
         where: { id: { $ne: id } },
         data: { isDefault: false },
       });
     }
 
-    const locale = await strapi.db.query("plugin::i18n.locale").update({
+    const locale = await strapi.db.query("plugin::irean-i18n.locale").update({
       where: { id },
       data,
     });
@@ -663,7 +668,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
       throw new Error("Cannot delete default locale");
     }
 
-    await strapi.db.query("plugin::i18n.locale").delete({
+    await strapi.db.query("plugin::irean-i18n.locale").delete({
       where: { id },
     });
 
@@ -674,7 +679,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
    * Obtener locale por defecto
    */
   async getDefaultLocale() {
-    const locale = await strapi.db.query("plugin::i18n.locale").findOne({
+    const locale = await strapi.db.query("plugin::irean-i18n.locale").findOne({
       where: { isDefault: true },
     });
 
@@ -684,7 +689,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 ```
 
 ```typescript
-// src/plugins/i18n/server/services/core-api.ts
+// src/plugins/irean-i18n/server/services/core-api.ts
 import type { Core } from "@strapi/strapi";
 
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
@@ -753,7 +758,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
       // Si no se especifica locale, usar el default
       if (!data.locale) {
         const defaultLocale = await strapi
-          .plugin("i18n")
+          .plugin("irean-i18n")
           .service("locales")
           .getDefaultLocale();
 
@@ -762,7 +767,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
       // Validar que el locale existe
       const locale = await strapi
-        .plugin("i18n")
+        .plugin("irean-i18n")
         .service("locales")
         .findByCode(data.locale);
 
@@ -778,7 +783,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 ```
 
 ```typescript
-// src/plugins/i18n/server/services/index.ts
+// src/plugins/irean-i18n/server/services/index.ts
 import locales from "./locales";
 import coreApi from "./core-api";
 
@@ -791,7 +796,7 @@ export default {
 ### Routes
 
 ```typescript
-// src/plugins/i18n/server/routes/admin.ts
+// src/plugins/irean-i18n/server/routes/admin.ts
 export default [
   {
     method: "GET",
@@ -803,7 +808,7 @@ export default [
         {
           name: "admin::hasPermissions",
           config: {
-            actions: ["plugin::i18n.locale.read"],
+            actions: ["plugin::irean-i18n.locale.read"],
           },
         },
       ],
@@ -819,7 +824,7 @@ export default [
         {
           name: "admin::hasPermissions",
           config: {
-            actions: ["plugin::i18n.locale.create"],
+            actions: ["plugin::irean-i18n.locale.create"],
           },
         },
       ],
@@ -835,7 +840,7 @@ export default [
         {
           name: "admin::hasPermissions",
           config: {
-            actions: ["plugin::i18n.locale.update"],
+            actions: ["plugin::irean-i18n.locale.update"],
           },
         },
       ],
@@ -851,7 +856,7 @@ export default [
         {
           name: "admin::hasPermissions",
           config: {
-            actions: ["plugin::i18n.locale.delete"],
+            actions: ["plugin::irean-i18n.locale.delete"],
           },
         },
       ],
@@ -861,7 +866,7 @@ export default [
 ```
 
 ```typescript
-// src/plugins/i18n/server/routes/index.ts
+// src/plugins/irean-i18n/server/routes/index.ts
 import admin from "./admin";
 
 export default {
@@ -875,10 +880,10 @@ export default {
 ### Content Types
 
 ```json
-// src/plugins/i18n/server/content-types/locale/schema.json
+// src/plugins/irean-i18n/server/content-types/locale/schema.json
 {
   "kind": "collectionType",
-  "collectionName": "i18n_locales",
+  "collectionName": "irean_i18n_locales",
   "info": {
     "singularName": "locale",
     "pluralName": "locales",
@@ -917,7 +922,7 @@ export default {
 ```
 
 ```typescript
-// src/plugins/i18n/server/content-types/index.ts
+// src/plugins/irean-i18n/server/content-types/index.ts
 import locale from "./locale/schema.json";
 
 export default {
@@ -928,7 +933,7 @@ export default {
 ### Middlewares
 
 ```typescript
-// src/plugins/i18n/server/middlewares/locale-handler.ts
+// src/plugins/irean-i18n/server/middlewares/locale-handler.ts
 export default (config, { strapi }) => {
   return async (ctx, next) => {
     // Detectar locale de la request
@@ -940,14 +945,14 @@ export default (config, { strapi }) => {
 
     // Verificar que el locale existe
     const localeExists = await strapi
-      .plugin("i18n")
+      .plugin("irean-i18n")
       .service("locales")
       .findByCode(locale);
 
     // Si no existe, usar el default
     if (!localeExists) {
       const defaultLocale = await strapi
-        .plugin("i18n")
+        .plugin("irean-i18n")
         .service("locales")
         .getDefaultLocale();
 
@@ -965,7 +970,7 @@ export default (config, { strapi }) => {
 ```
 
 ```typescript
-// src/plugins/i18n/server/middlewares/index.ts
+// src/plugins/irean-i18n/server/middlewares/index.ts
 import localeHandler from "./locale-handler";
 
 export default {
@@ -978,12 +983,12 @@ export default {
 ### Entry Point del Admin
 
 ```typescript
-// src/plugins/i18n/admin/src/index.tsx
+// src/plugins/irean-i18n/admin/src/index.tsx
 import { prefixPluginTranslations } from "@strapi/strapi/admin";
 import pluginId from "./pluginId";
 import PluginIcon from "./components/PluginIcon";
 
-const pluginName = "i18n";
+const pluginName = "irean-i18n";
 
 export default {
   /**
@@ -1000,7 +1005,7 @@ export default {
       },
       permissions: [
         {
-          action: "plugin::i18n.locale.read",
+          action: "plugin::irean-i18n.locale.read",
           subject: null,
         },
       ],
@@ -1012,7 +1017,7 @@ export default {
 
     // 2. Registrar link en settings
     app.addSettingsLink("global", {
-      id: "i18n-settings",
+      id: "irean-i18n-settings",
       to: `/settings/${pluginId}`,
       intlLabel: {
         id: `${pluginId}.settings.title`,
@@ -1020,7 +1025,7 @@ export default {
       },
       permissions: [
         {
-          action: "plugin::i18n.locale.read",
+          action: "plugin::irean-i18n.locale.read",
           subject: null,
         },
       ],
@@ -1075,7 +1080,7 @@ export default {
 ### Componentes del Admin
 
 ```typescript
-// src/plugins/i18n/admin/src/components/LocalePicker/index.tsx
+// src/plugins/irean-i18n/admin/src/components/LocalePicker/index.tsx
 import React from 'react';
 import { Select, Option } from '@strapi/design-system';
 import { useLocales } from '../../hooks/useLocales';
@@ -1111,7 +1116,7 @@ export const LocalePicker: React.FC<LocalePickerProps> = ({ value, onChange }) =
 ```
 
 ```typescript
-// src/plugins/i18n/admin/src/hooks/useLocales.ts
+// src/plugins/irean-i18n/admin/src/hooks/useLocales.ts
 import { useEffect, useState } from "react";
 import { useFetchClient } from "@strapi/strapi/admin";
 import pluginId from "../pluginId";
@@ -1152,7 +1157,7 @@ export const useLocales = () => {
 ### Páginas del Admin
 
 ```typescript
-// src/plugins/i18n/admin/src/pages/Settings/index.tsx
+// src/plugins/irean-i18n/admin/src/pages/Settings/index.tsx
 import React, { useState } from 'react';
 import {
   Page,
@@ -1236,15 +1241,15 @@ export default SettingsPage;
 ### Plugin ID
 
 ```typescript
-// src/plugins/i18n/admin/src/pluginId.ts
-const pluginId = "i18n";
+// src/plugins/irean-i18n/admin/src/pluginId.ts
+const pluginId = "irean-i18n";
 
 export default pluginId;
 ```
 
-## 🔌 Habilitar i18n en Content Types
+## 🔌 Habilitar irean-i18n en Content Types
 
-Para habilitar i18n en un content type existente:
+Para habilitar irean-i18n en un content type existente:
 
 ```json
 // src/api/producto/content-types/producto/schema.json
@@ -1260,7 +1265,7 @@ Para habilitar i18n en un content type existente:
     "draftAndPublish": true
   },
   "pluginOptions": {
-    "i18n": {
+    "irean-i18n": {
       "localized": true
     }
   },
@@ -1269,7 +1274,7 @@ Para habilitar i18n en un content type existente:
       "type": "string",
       "required": true,
       "pluginOptions": {
-        "i18n": {
+        "irean-i18n": {
           "localized": true
         }
       }
@@ -1277,7 +1282,7 @@ Para habilitar i18n en un content type existente:
     "descripcion": {
       "type": "text",
       "pluginOptions": {
-        "i18n": {
+        "irean-i18n": {
           "localized": true
         }
       }
