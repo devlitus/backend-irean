@@ -1,0 +1,45 @@
+name: Migrate Database to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Confirma la migración escribiendo: confirm'
+        required: true
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validar confirmación
+        if: github.event.inputs.confirm != 'confirm'
+        run: |
+          echo "❌ Migración cancelada - confirmación incorrecta"
+          exit 1
+
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Ejecutar migración
+        env:
+          DATABASE_URL_DEV: ${{ secrets.DATABASE_URL_DEV }}
+          DATABASE_URL_PROD: ${{ secrets.DATABASE_URL_PROD }}
+        run: |
+          chmod +x scripts/migrate-db.sh
+          scripts/migrate-db.sh
+
+      - name: Notificar éxito
+        if: success()
+        run: echo "✅ Base de datos migrada exitosamente a producción"
+
+      - name: Notificar error
+        if: failure()
+        run: |
+          echo "❌ Error durante la migración"
+          exit 1

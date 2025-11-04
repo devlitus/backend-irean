@@ -130,3 +130,12 @@ dist
 build
 .strapi-updater.json
 .strapi-cloud.json
+
+############################
+# Migration & Backups
+############################
+
+.railway-migration.env
+backup*.sql
+backup_*.sql
+/tmp/railway-migration/
