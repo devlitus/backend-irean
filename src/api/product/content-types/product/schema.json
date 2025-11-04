@@ -86,6 +86,14 @@
     },
     "seo_description": {
       "type": "text"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "sold": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
