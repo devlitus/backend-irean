@@ -18,26 +18,7 @@
     "description": {
       "type": "blocks"
     },
-    "price": {
-      "type": "decimal",
-      "required": true
-    },
-    "discount_price": {
-      "type": "decimal"
-    },
-    "category": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::category.category",
-      "inversedBy": "products"
-    },
-    "subcategories": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::subcategory.subcategory",
-      "mappedBy": "product"
-    },
-    "images": {
+    "image": {
       "type": "media",
       "multiple": true,
       "required": true,
@@ -46,36 +27,8 @@
         "files"
       ]
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "name",
-      "required": true
-    },
-    "stock": {
-      "type": "integer",
-      "required": true
-    },
-    "sold": {
-      "type": "boolean"
-    },
     "visible": {
-      "type": "boolean",
-      "default": true
-    },
-    "seo_title": {
-      "type": "string"
-    },
-    "seo_description": {
-      "type": "string"
-    },
-    "years": {
-      "type": "enumeration",
-      "enum": [
-        "newbor_infant",
-        "newbor_toddler",
-        "children",
-        "youth"
-      ]
+      "type": "boolean"
     },
     "gender": {
       "type": "enumeration",
@@ -85,12 +38,12 @@
         "girl"
       ]
     },
-    "badge": {
+    "tag": {
       "type": "enumeration",
       "enum": [
-        "new",
-        "favorite",
-        "outlet"
+        "New",
+        "Outlet",
+        "Favourite"
       ]
     },
     "type": {
@@ -100,6 +53,12 @@
         "pelele",
         "dress"
       ]
+    },
+    "subcategories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subcategory.subcategory",
+      "mappedBy": "product"
     }
   }
 }

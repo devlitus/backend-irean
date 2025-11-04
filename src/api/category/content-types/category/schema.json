@@ -13,28 +13,30 @@
   "attributes": {
     "name": {
       "type": "string",
-      "required": true,
-      "unique": true
+      "required": true
     },
     "description": {
-      "type": "text"
+      "type": "text",
+      "required": false
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
     },
     "image": {
       "type": "media",
       "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images",
-        "files",
-        "videos",
-        "audios"
+        "files"
       ]
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "name"
-    },
     "visible": {
-      "type": "boolean"
+      "type": "boolean",
+      "required": true,
+      "default": true
     },
     "seo_title": {
       "type": "string"
@@ -42,25 +44,11 @@
     "seo_description": {
       "type": "text"
     },
-    "language": {
-      "type": "enumeration",
-      "enum": [
-        "es",
-        "en",
-        "ca"
-      ]
-    },
-    "subcategories": {
+    "subcategory": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToOne",
       "target": "api::subcategory.subcategory",
-      "mappedBy": "category"
-    },
-    "products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product",
-      "mappedBy": "category"
+      "inversedBy": "categories"
     }
   }
 }

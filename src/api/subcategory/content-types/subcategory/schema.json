@@ -13,40 +13,27 @@
   "attributes": {
     "name": {
       "type": "string",
-      "required": true,
-      "unique": true
+      "required": true
     },
     "description": {
       "type": "text"
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "name"
-    },
-    "langauge": {
-      "type": "enumeration",
-      "enum": [
-        "es",
-        "en",
-        "ca"
-      ]
-    },
     "visible": {
-      "type": "boolean"
+      "type": "boolean",
+      "required": true,
+      "default": true
     },
-    "tag": {
-      "type": "enumeration",
-      "enum": [
-        "outfit",
-        "pelele",
-        "dress"
-      ]
-    },
-    "category": {
+    "categories": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToMany",
       "target": "api::category.category",
-      "inversedBy": "subcategories"
+      "mappedBy": "subcategory"
+    },
+    "seo_description": {
+      "type": "text"
+    },
+    "seo_title": {
+      "type": "string"
     },
     "product": {
       "type": "relation",
