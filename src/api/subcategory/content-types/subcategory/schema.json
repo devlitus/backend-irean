@@ -40,6 +40,10 @@
       "relation": "manyToOne",
       "target": "api::product.product",
       "inversedBy": "subcategories"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
     }
   }
 }
