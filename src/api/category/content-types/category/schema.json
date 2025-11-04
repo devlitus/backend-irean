@@ -44,15 +44,15 @@
     "seo_description": {
       "type": "text"
     },
-    "subcategory": {
+    "subcategories": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToMany",
       "target": "api::subcategory.subcategory",
-      "inversedBy": "categories"
+      "mappedBy": "category"
     },
-    "product": {
+    "products": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::product.product",
       "inversedBy": "categories"
     }

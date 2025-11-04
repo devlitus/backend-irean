@@ -56,15 +56,15 @@
     },
     "subcategories": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::subcategory.subcategory",
-      "mappedBy": "product"
+      "mappedBy": "products"
     },
     "categories": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::category.category",
-      "mappedBy": "product"
+      "mappedBy": "products"
     }
   }
 }
