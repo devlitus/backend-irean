@@ -1,37 +1,12 @@
-# Categoria REST API
+# Category REST API
 @baseUrl=http://localhost:1337
-@id=fwke0dxrjfzxpsr06pi3xj84
+@id=w1ronmdbir6kz368vp3g93rv
 
-### Listar todas las categorías
-GET {{baseUrl}}/api/categorias
+### List all categories
+GET {{baseUrl}}/api/categories
 
-### Listar todas las categorías con relaciones pobladas
-GET {{baseUrl}}/api/categorias?populate=*
+### List all categories with populated relations
+GET {{baseUrl}}/api/categories?populate=*
 
-### Obtener categoría por ID
-GET {{baseUrl}}/api/categorias/{{id}}
-
-### Crear nueva categoría
-POST {{baseUrl}}/api/categorias
-Content-Type: application/json
-
-{
-  "data": {
-    "nombre": "Café Arábica",
-    "descripcion": "Categoría para cafés de variedad arábica"
-  }
-}
-
-### Actualizar categoría
-PUT {{baseUrl}}/api/categorias/{{id}}
-Content-Type: application/json
-
-{
-  "data": {
-    "nombre": "Café Arábica Premium",
-    "descripcion": "Categoría actualizada para cafés premium de variedad arábica"
-  }
-}
-
-### Eliminar categoría
-DELETE {{baseUrl}}/api/categorias/{{id}}
+### Get category by ID
+GET {{baseUrl}}/api/categories/{{id}}

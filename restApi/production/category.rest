@@ -1,0 +1,11 @@
+@baseUrl=https://backend-irean-production.up.railway.app
+@id=ja41ggh9e9ab7vqiq957apkj
+
+### List all categories
+GET {{baseUrl}}/api/categories
+
+### List all categories with populated relations
+GET {{baseUrl}}/api/categories?populate=*
+
+### Get category by ID
+GET {{baseUrl}}/api/categories/{{id}}
