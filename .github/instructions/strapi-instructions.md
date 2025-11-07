@@ -2,7 +2,7 @@
 applyTo: "src/api/**/*.{ts,js}"
 ---
 
-# Strapi 5.25+ Backend Development Best Practices
+# Strapi 5.30+ Backend Development Best Practices
 
 ## 📂 Estructura de Content-Type
 
@@ -21,6 +21,49 @@ src/api/[content-type-name]/
 
 **Project's actual content types**: `product`, `category`, `subcategory`, `order`
 
+## ⚠️ Cambios Importantes en Strapi v5 (desde v4)
+
+### Entity Service → Document Service API
+
+En Strapi v5, el **Entity Service API está deprecado** y ha sido reemplazado por el **Document Service API**. Los cambios principales son:
+
+```typescript
+// ❌ STRAPI V4 - Entity Service (DEPRECATED)
+const product = await strapi.entityService.findOne("api::product.product", id);
+
+// ✅ STRAPI V5.30+ - Document Service API (RECOMENDADO)
+const product = await strapi.documents("api::product.product").findOne(id);
+```
+
+### Diferencias clave:
+
+| Aspecto                           | Entity Service (v4)           | Document Service (v5.30+)                    |
+| --------------------------------- | ----------------------------- | -------------------------------------------- |
+| **Método de búsqueda individual** | `findOne(id)`                 | `findOne(documentId)`                        |
+| **Búsqueda múltiple**             | `findMany(params)`            | `findMany(params)`                           |
+| **Single types**                  | `findOne()` retorna un item   | `findOne()` retorna un item                  |
+| **Parámetro ID**                  | `id`                          | `documentId`                                 |
+| **Estado de publicación**         | `publicationState: 'preview'` | `status: 'draft'` \| `'published'`           |
+| **Nuevos métodos**                | N/A                           | `publish()`, `unpublish()`, `discardDraft()` |
+| **Eliminación**                   | Retorna un item               | Retorna un array                             |
+| **Carga de archivos**             | Soportado                     | ❌ No soportado                              |
+
+### Validación y Sanitización - Cambios en v5
+
+En Strapi v5, **la validación de entrada es automática** por defecto en controllers:
+
+```typescript
+// Strapi v4 - validación manual
+import { validate, sanitize } from "@strapi/utils";
+validate.contentAPI.xxx();
+sanitize.contentAPI.xxx();
+
+// Strapi v5 - validación automática + acceso via strapi
+// Aún necesitas llamar a sanitizeQuery y sanitizeOutput
+const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+const sanitizedResults = await this.sanitizeOutput(results, ctx);
+```
+
 ## 🎯 Controllers
 
 ### Core Controller Pattern
@@ -34,9 +77,7 @@ export default factories.createCoreController(
     // Método 1: Action completamente personalizado
     async customAction(ctx) {
       try {
-        const data = await strapi
-          .service("api::product.product")
-          .customLogic();
+        const data = await strapi.service("api::product.product").customLogic();
         ctx.body = { data };
       } catch (err) {
         ctx.badRequest("Error en customAction", { error: err.message });
@@ -45,43 +86,35 @@ export default factories.createCoreController(
 
     // Método 2: Wrapping de core action (mantiene lógica base)
     async find(ctx) {
-      // Validar query (opcional pero recomendado)
-      await this.validateQuery(ctx);
+      // some custom logic here
+      ctx.query = { ...ctx.query, local: "en" };
 
-      // Sanitizar query params
-      const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+      // Calling the default core action
+      const { data, meta } = await super.find(ctx);
 
-      // Llamar al servicio
-      const { results, pagination } = await strapi
-        .service("api::product.product")
-        .find(sanitizedQueryParams);
+      // some more custom logic
+      meta.date = Date.now();
 
-      // Sanitizar output
-      const sanitizedResults = await this.sanitizeOutput(results, ctx);
-
-      // Lógica custom adicional
-      const modifiedResults = sanitizedResults.map((result) => ({
-        ...result,
-        customField: "value",
-      }));
-
-      return this.transformResponse(modifiedResults, { pagination });
+      return { data, meta };
     },
 
-    // Método 3: Reemplazar completamente un core action
-    async findOne(ctx) {
-      const { id } = ctx.params;
-
+    // Método 3: Reemplazar completamente un core action con sanitización
+    async find(ctx) {
+      // validateQuery (optional)
+      // to throw an error on query params that are invalid or the user does not have access to
       await this.validateQuery(ctx);
+
+      // sanitizeQuery to remove any query params that are invalid or the user does not have access to
+      // It is strongly recommended to use sanitizeQuery even if validateQuery is used
       const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+      const { results, pagination } = await strapi
+        .service("api::restaurant.restaurant")
+        .find(sanitizedQueryParams);
 
-      const entity = await strapi
-        .documents("api::product.product")
-        .findOne({ documentId: id, ...sanitizedQueryParams });
+      // sanitizeOutput to ensure the user does not receive any data they do not have access to
+      const sanitizedResults = await this.sanitizeOutput(results, ctx);
 
-      const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
-
-      return this.transformResponse(sanitizedEntity);
+      return this.transformResponse(sanitizedResults, { pagination });
     },
   })
 );
@@ -140,11 +173,9 @@ export default factories.createCoreService(
         const processed = await this.processData(data);
 
         // Crear documento usando Document Service API
-        const document = await strapi
-          .documents("api::product.product")
-          .create({
-            data: processed,
-          });
+        const document = await strapi.documents("api::product.product").create({
+          data: processed,
+        });
 
         return document;
       } catch (error) {
@@ -155,6 +186,7 @@ export default factories.createCoreService(
 
     // Método 2: Wrapping de core service
     async find(...args) {
+      // Calling the default core service
       const { results, pagination } = await super.find(...args);
 
       // Lógica custom adicional
@@ -171,7 +203,14 @@ export default factories.createCoreService(
       return { results: enrichedResults, pagination };
     },
 
-    // Método 3: Helper methods privados
+    // Método 3: Reemplazar completamente un core service
+    async findOne(documentId, params = {}) {
+      return strapi
+        .documents("api::product.product")
+        .findOne(documentId, this.getFetchParams(params));
+    },
+
+    // Helper methods privados
     async processData(data) {
       // Lógica de procesamiento reutilizable
       return {
@@ -230,25 +269,23 @@ const count = await strapi.documents("api::product.product").count({
 
 ```typescript
 // Para consultas más complejas
-const products = await strapi.db
-  .query("api::product.product")
-  .findMany({
-    where: {
-      $or: [
-        { name: { $containsi: "dress" } },
-        { description: { $containsi: "dress" } },
-      ],
+const products = await strapi.db.query("api::product.product").findMany({
+  where: {
+    $or: [
+      { name: { $containsi: "dress" } },
+      { description: { $containsi: "dress" } },
+    ],
+  },
+  populate: {
+    categories: true,
+    subcategories: {
+      select: ["name", "slug"],
     },
-    populate: {
-      categories: true,
-      subcategories: {
-        select: ["name", "slug"],
-      },
-    },
-    orderBy: { price: "asc" },
-    limit: 10,
-    offset: 0,
-  });
+  },
+  orderBy: { price: "asc" },
+  limit: 10,
+  offset: 0,
+});
 ```
 
 ## 🛣️ Routes
@@ -258,21 +295,60 @@ const products = await strapi.db
 ```typescript
 import { factories } from "@strapi/strapi";
 
-export default factories.createCoreRouter("api::product.product", {
-  prefix: "", // Custom prefix
-  only: ["find", "findOne"], // Solo estos métodos
-  except: ["delete"], // Excluir estos métodos
+export default factories.createCoreRouter("api::restaurant.restaurant", {
   config: {
     find: {
-      auth: false, // Desactivar auth para este endpoint
-      policies: [], // Aplicar policies
-      middlewares: [],
+      auth: false,
     },
-    findOne: {
-      policies: ["is-authenticated"],
+  },
+});
+```
+
+### Core Router con Policies
+
+```typescript
+import { factories } from "@strapi/strapi";
+
+export default factories.createCoreRouter("api::restaurant.restaurant", {
+  config: {
+    find: {
+      policies: [
+        // point to a registered policy
+        "policy-name",
+
+        // point to a registered policy with some custom configuration
+        { name: "policy-name", config: {} },
+
+        // pass a policy implementation directly
+        (policyContext, config, { strapi }) => {
+          return true;
+        },
+      ],
     },
-    create: {
-      middlewares: ["api::product.validate-data"],
+  },
+});
+```
+
+### Core Router con Middlewares
+
+```typescript
+import { factories } from "@strapi/strapi";
+
+export default factories.createCoreRouter("api::restaurant.restaurant", {
+  config: {
+    find: {
+      middlewares: [
+        // point to a registered middleware
+        "middleware-name",
+
+        // point to a registered middleware with some custom configuration
+        { name: "middleware-name", config: {} },
+
+        // pass a middleware implementation directly
+        (ctx, next) => {
+          return next();
+        },
+      ],
     },
   },
 });
@@ -285,11 +361,10 @@ export default {
   routes: [
     {
       method: "GET",
-      path: "/products/on-sale",
-      handler: "product.findOnSale",
+      path: "/articles/customRoute",
+      handler: "api::api-name.controllerName.functionName", // or 'plugin::plugin-name.controllerName.functionName' for a plugin-specific controller
       config: {
-        policies: [],
-        middlewares: [],
+        auth: false,
       },
     },
     {
@@ -300,15 +375,61 @@ export default {
         policies: ["plugin::users-permissions.isAuthenticated"],
       },
     },
+  ],
+};
+```
+
+### Custom Routes con Middlewares
+
+```typescript
+export default {
+  routes: [
     {
       method: "GET",
-      path: "/products/search/:term",
-      handler: "product.search",
+      path: "/articles/customRoute",
+      handler: "api::api-name.controllerName.functionName",
+      config: {
+        middlewares: [
+          // point to a registered middleware
+          "middleware-name",
+
+          // point to a registered middleware with some custom configuration
+          { name: "middleware-name", config: {} },
+
+          // pass a middleware implementation directly
+          (ctx, next) => {
+            return next();
+          },
+        ],
+      },
     },
+  ],
+};
+```
+
+### Custom Routes con Policies
+
+```typescript
+export default {
+  routes: [
     {
       method: "GET",
-      path: "/products/category/:categorySlug",
-      handler: "product.findByCategory",
+      path: "/articles/customRoute",
+      handler: "api::api-name.controllerName.functionName",
+      config: {
+        policies: [
+          // point to a registered policy
+          "policy-name",
+
+          // point to a registered policy with some custom configuration
+          { name: "policy-name", config: {} },
+
+          // pass a policy implementation directly
+          (policyContext, config, { strapi }) => {
+            return true;
+          },
+        ],
+      },
     },
   ],
 };
@@ -328,7 +449,7 @@ export default (policyContext, config, { strapi }) => {
   }
 
   // Verificar si es admin
-  return user.role && user.role.type === 'admin';
+  return user.role && user.role.type === "admin";
 };
 ```
 
@@ -344,6 +465,21 @@ config: {
     "global::is-authenticated", // Policy global
   ];
 }
+```
+
+### Policy Global
+
+```typescript
+// src/policies/is-authenticated.ts
+export default (policyContext, config, { strapi }) => {
+  if (policyContext.state.user) {
+    // if a session is open
+    // go to next policy or reach the controller's action
+    return true;
+  }
+
+  return false; // If you return nothing, Strapi considers you didn't want to block the request and will let it pass
+};
 ```
 
 ## 🎛️ Middlewares
@@ -514,29 +650,31 @@ async find(ctx) {
 ### ✅ DO
 
 - Usar Document Service API para operaciones CRUD
-- Sanitizar queries y outputs
+- Sanitizar queries y outputs (validateQuery, sanitizeQuery, sanitizeOutput)
 - Separar lógica de negocio en servicios
-- Usar TypeScript y generar tipos
+- Usar TypeScript y generar tipos con `npm run strapi ts:generate-types`
 - Implementar policies para autorización
 - Usar middlewares para validación
 - Loggear errores con contexto
 - Populate solo lo necesario
+- Usar `super.find()` para wrapping de core actions
 
 ### ❌ DON'T
 
 - No poner lógica de negocio en controllers
-- No olvidar sanitizar datos
+- No olvidar sanitizar datos en controllers
 - No usar populate: '\*' en producción
 - No hacer queries sin validación
 - No exponer datos sensibles
 - No silenciar errores
-- No usar any en TypeScript
+- No usar `any` en TypeScript
+- No reimplementar métodos que Strapi ya proporciona (usar factories)
 
 ## 🔧 CLI Commands
 
 ```bash
 # Generar tipos TypeScript
-npm run strapi ts:generate-types
+npm run strapi ts:generate-types --debug # optional flag para logging detallado
 
 # Generar API completa
 npm run strapi generate api product name:string price:decimal
@@ -556,4 +694,65 @@ npm run start
 
 ---
 
-**Nota**: Estas prácticas están basadas en Strapi 5.25+ con Document Service API. Esta versión incluye mejoras en performance y nuevas características de la API.
+**Nota**: Estas prácticas están basadas en Strapi 5.30+ con Document Service API. Esta versión incluye mejoras en performance, mejor sanitización y nuevas características de la API.
+
+## � Document Service Middlewares (v5.30+)
+
+En Strapi v5, los **Entity Service Decorators** han sido reemplazados por **Document Service Middlewares**:
+
+```typescript
+// ❌ STRAPI V4 - Entity Service Decorators (DEPRECATED)
+strapi.entityService.decorate((service) => {
+  return Object.assign(service, {
+    findOne(entityId, params = {}) {
+      params.filters = { ...params.filters, deletedAt: { $notNull: true } };
+      return service.findOne(entityId, params);
+    },
+  });
+});
+
+// ✅ STRAPI V5.30+ - Document Service Middlewares
+strapi.documents.use((ctx, next) => {
+  if (ctx.uid !== "api::my-content-type.my-content-type") {
+    return next();
+  }
+
+  if (ctx.action === "findOne") {
+    // customization
+    ctx.params.filters = {
+      ...ctx.params.filters,
+      deletedAt: { $notNull: true },
+    };
+    const res = await next();
+    // do something with the response if you want
+    return res;
+  }
+
+  return next();
+});
+```
+
+### Acciones soportadas en Document Service:
+
+- `findOne`
+- `findMany`
+- `count`
+- `create`
+- `update`
+- `delete`
+- `publish` (v5+)
+- `unpublish` (v5+)
+- `discardDraft` (v5+)
+
+## �📚 Referencias Oficiales
+
+- **Strapi v5 Docs**: https://docs.strapi.io/dev-docs/intro
+- **Controllers**: https://docs.strapi.io/dev-docs/backend-customization/controllers
+- **Services**: https://docs.strapi.io/dev-docs/backend-customization/services
+- **Routes**: https://docs.strapi.io/dev-docs/backend-customization/routes
+- **Policies**: https://docs.strapi.io/dev-docs/backend-customization/policies
+- **Middlewares**: https://docs.strapi.io/dev-docs/configurations/middlewares
+- **TypeScript**: https://docs.strapi.io/dev-docs/typescript
+- **Error Handling**: https://docs.strapi.io/dev-docs/error-handling
+- **Migration v4 to v5**: https://docs.strapi.io/dev-docs/migration/v4-to-v5
+- **Document Service API**: https://docs.strapi.io/dev-docs/backend-customization/document-service-api

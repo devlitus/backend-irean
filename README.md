@@ -81,7 +81,6 @@ Strapi es un **headless CMS open-source** que permite:
 | **Node.js**    | 18.x - 22.x | Runtime de JavaScript      |
 | **TypeScript** | 5.x         | Lenguaje tipado            |
 | **PostgreSQL** | 8.8.0       | Base de datos (producción) |
-| **SQLite**     | 12.4.1      | Base de datos (desarrollo) |
 | **React**      | 18.x        | Admin Panel UI             |
 | **Knex.js**    | -           | Query Builder (ORM)        |
 
@@ -105,7 +104,7 @@ Antes de comenzar, asegúrate de tener instalado:
 ### Verificar Instalación
 
 ```bash
-node --version  # Debe ser v18.x o superior
+node --version  # Debe ser v20.x o superior
 npm --version   # Debe ser v6.x o superior
 ```
 
@@ -322,24 +321,24 @@ Representa un producto en el e-commerce.
 
 **Atributos:**
 
-| Campo             | Tipo         | Requerido | Descripción                              |
-| ----------------- | ------------ | --------- | ---------------------------------------- |
-| `name`            | string       | ✅ Sí     | Nombre del producto                      |
-| `price`           | decimal      | ✅ Sí     | Precio del producto (mín: 0)             |
-| `discount_price`  | decimal      | ❌ No     | Precio con descuento (mín: 0)            |
-| `description`     | blocks       | ❌ No     | Descripción rich text                    |
-| `image`           | media[]      | ✅ Sí     | Imágenes del producto (múltiples)        |
-| `gender`          | enumeration  | ✅ Sí     | Género: `boy`, `girl`                    |
-| `tag`             | enumeration  | ❌ No     | Etiqueta: `New`, `Outlet`, `Favourite`   |
-| `type`            | enumeration  | ❌ No     | Tipo: `outfit`, `pelele`, `dress`        |
-| `visible`         | boolean      | ❌ No     | Visibilidad en el catálogo               |
-| `sold`            | boolean      | ❌ No     | Si el producto está vendido (def: false) |
-| `stock`           | biginteger   | ✅ Sí     | Cantidad en inventario (def: 0, mín: 0) |
-| `seo_title`       | string       | ❌ No     | Título para SEO                          |
-| `seo_description` | text         | ❌ No     | Descripción meta para SEO                |
-| `slug`            | uid          | ❌ No     | Slug único para URLs (generado)          |
-| `categories`      | relation     | ❌ No     | Relación many-to-many con Categoría      |
-| `subcategories`   | relation     | ❌ No     | Relación many-to-many con Subcategoría   |
+| Campo             | Tipo        | Requerido | Descripción                              |
+| ----------------- | ----------- | --------- | ---------------------------------------- |
+| `name`            | string      | ✅ Sí     | Nombre del producto                      |
+| `price`           | decimal     | ✅ Sí     | Precio del producto (mín: 0)             |
+| `discount_price`  | decimal     | ❌ No     | Precio con descuento (mín: 0)            |
+| `description`     | blocks      | ❌ No     | Descripción rich text                    |
+| `image`           | media[]     | ✅ Sí     | Imágenes del producto (múltiples)        |
+| `gender`          | enumeration | ✅ Sí     | Género: `boy`, `girl`                    |
+| `tag`             | enumeration | ❌ No     | Etiqueta: `New`, `Outlet`, `Favourite`   |
+| `type`            | enumeration | ❌ No     | Tipo: `outfit`, `pelele`, `dress`        |
+| `visible`         | boolean     | ❌ No     | Visibilidad en el catálogo               |
+| `sold`            | boolean     | ❌ No     | Si el producto está vendido (def: false) |
+| `stock`           | biginteger  | ✅ Sí     | Cantidad en inventario (def: 0, mín: 0)  |
+| `seo_title`       | string      | ❌ No     | Título para SEO                          |
+| `seo_description` | text        | ❌ No     | Descripción meta para SEO                |
+| `slug`            | uid         | ❌ No     | Slug único para URLs (generado)          |
+| `categories`      | relation    | ❌ No     | Relación many-to-many con Categoría      |
+| `subcategories`   | relation    | ❌ No     | Relación many-to-many con Subcategoría   |
 
 **Ejemplo de respuesta API:**
 
@@ -364,12 +363,8 @@ Representa un producto en el e-commerce.
     "createdAt": "2024-11-07T10:30:00.000Z",
     "updatedAt": "2024-11-07T10:30:00.000Z",
     "publishedAt": "2024-11-07T10:30:00.000Z",
-    "categories": [
-      { "id": 2, "name": "Vestidos" }
-    ],
-    "subcategories": [
-      { "id": 5, "name": "Vestidos Casuales" }
-    ]
+    "categories": [{ "id": 2, "name": "Vestidos" }],
+    "subcategories": [{ "id": 5, "name": "Vestidos Casuales" }]
   }
 }
 ```
@@ -380,17 +375,17 @@ Categoría principal de productos. Soporta internacionalización (i18n).
 
 **Atributos:**
 
-| Campo           | Tipo     | Requerido | i18n | Descripción                              |
-| --------------- | -------- | --------- | ---- | ---------------------------------------- |
-| `name`          | string   | ✅ Sí     | ✅   | Nombre de la categoría                   |
-| `description`   | text     | ❌ No     | ✅   | Descripción breve                        |
-| `slug`          | uid      | ✅ Sí     | ❌   | Slug único para URLs (generado)          |
-| `image`         | media    | ✅ Sí     | ✅   | Imagen de la categoría                   |
-| `visible`       | boolean  | ✅ Sí     | ✅   | Visibilidad (def: true)                  |
-| `seo_title`     | string   | ❌ No     | ✅   | Título para SEO                          |
-| `seo_description` | text   | ❌ No     | ✅   | Descripción meta para SEO                |
-| `subcategories` | relation | ❌ No     | ❌   | Relación one-to-many con Subcategorías   |
-| `products`      | relation | ❌ No     | ❌   | Relación many-to-many con Productos      |
+| Campo             | Tipo     | Requerido | i18n | Descripción                            |
+| ----------------- | -------- | --------- | ---- | -------------------------------------- |
+| `name`            | string   | ✅ Sí     | ✅   | Nombre de la categoría                 |
+| `description`     | text     | ❌ No     | ✅   | Descripción breve                      |
+| `slug`            | uid      | ✅ Sí     | ❌   | Slug único para URLs (generado)        |
+| `image`           | media    | ✅ Sí     | ✅   | Imagen de la categoría                 |
+| `visible`         | boolean  | ✅ Sí     | ✅   | Visibilidad (def: true)                |
+| `seo_title`       | string   | ❌ No     | ✅   | Título para SEO                        |
+| `seo_description` | text     | ❌ No     | ✅   | Descripción meta para SEO              |
+| `subcategories`   | relation | ❌ No     | ❌   | Relación one-to-many con Subcategorías |
+| `products`        | relation | ❌ No     | ❌   | Relación many-to-many con Productos    |
 
 > **Nota sobre i18n**: Los campos marcados con ✅ soportan múltiples idiomas. Usa el header `X-Locale` en requests para especificar idioma.
 
@@ -400,14 +395,14 @@ Subcategoría dentro de una categoría. Soporta internacionalización (i18n).
 
 **Atributos:**
 
-| Campo           | Tipo     | Requerido | i18n | Descripción                              |
-| --------------- | -------- | --------- | ---- | ---------------------------------------- |
-| `name`          | string   | ❌ No     | ✅   | Nombre de la subcategoría                |
-| `description`   | text     | ❌ No     | ✅   | Descripción breve                        |
-| `slug`          | uid      | ❌ No     | ❌   | Slug único para URLs (generado)          |
-| `visible`       | boolean  | ❌ No     | ✅   | Visibilidad en el catálogo               |
-| `category`      | relation | ❌ No     | ❌   | Relación many-to-one con Categoría       |
-| `products`      | relation | ❌ No     | ❌   | Relación many-to-many con Productos      |
+| Campo         | Tipo     | Requerido | i18n | Descripción                         |
+| ------------- | -------- | --------- | ---- | ----------------------------------- |
+| `name`        | string   | ❌ No     | ✅   | Nombre de la subcategoría           |
+| `description` | text     | ❌ No     | ✅   | Descripción breve                   |
+| `slug`        | uid      | ❌ No     | ❌   | Slug único para URLs (generado)     |
+| `visible`     | boolean  | ❌ No     | ✅   | Visibilidad en el catálogo          |
+| `category`    | relation | ❌ No     | ❌   | Relación many-to-one con Categoría  |
+| `products`    | relation | ❌ No     | ❌   | Relación many-to-many con Productos |
 
 > **Nota sobre i18n**: Los campos marcados con ✅ soportan múltiples idiomas.
 
