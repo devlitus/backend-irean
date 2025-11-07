@@ -2,7 +2,7 @@
 
 > API REST headless CMS construido con Strapi 5 para la plataforma e-commerce Irean
 
-[![Strapi](https://img.shields.io/badge/Strapi-5.25-4945ff?logo=strapi)](https://strapi.io/)
+[![Strapi](https://img.shields.io/badge/Strapi-5.30-4945ff?logo=strapi)](https://strapi.io/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-336791?logo=postgresql)](https://www.postgresql.org/)
@@ -77,7 +77,7 @@ Strapi es un **headless CMS open-source** que permite:
 
 | Tecnología     | Versión     | Propósito                  |
 | -------------- | ----------- | -------------------------- |
-| **Strapi**     | 5.25.0      | Headless CMS Framework     |
+| **Strapi**     | 5.30.0      | Headless CMS Framework     |
 | **Node.js**    | 18.x - 22.x | Runtime de JavaScript      |
 | **TypeScript** | 5.x         | Lenguaje tipado            |
 | **PostgreSQL** | 8.8.0       | Base de datos (producción) |
@@ -316,98 +316,133 @@ npm run console
 
 ## 🗄️ Content Types
 
-### 1. Producto (`api::producto.producto`)
+### 1. Producto (`api::product.product`)
 
 Representa un producto en el e-commerce.
 
 **Atributos:**
 
-| Campo          | Tipo     | Requerido | Descripción                          |
-| -------------- | -------- | --------- | ------------------------------------ |
-| `nombre`       | string   | ✅ Sí     | Nombre del producto                  |
-| `precio`       | decimal  | ✅ Sí     | Precio del producto                  |
-| `descripcion`  | blocks   | ❌ No     | Descripción rich text                |
-| `imagen`       | media[]  | ✅ Sí     | Imágenes del producto (múltiples)    |
-| `vendido`      | boolean  | ❌ No     | Si el producto está vendido          |
-| `stock`        | integer  | ❌ No     | Cantidad en inventario               |
-| `slug`         | uid      | ✅ Sí     | Slug único para URLs                 |
-| `categoria`    | relation | ❌ No     | Relación one-to-one con Categoría    |
-| `subcategoria` | relation | ❌ No     | Relación one-to-one con Subcategoría |
+| Campo             | Tipo         | Requerido | Descripción                              |
+| ----------------- | ------------ | --------- | ---------------------------------------- |
+| `name`            | string       | ✅ Sí     | Nombre del producto                      |
+| `price`           | decimal      | ✅ Sí     | Precio del producto (mín: 0)             |
+| `discount_price`  | decimal      | ❌ No     | Precio con descuento (mín: 0)            |
+| `description`     | blocks       | ❌ No     | Descripción rich text                    |
+| `image`           | media[]      | ✅ Sí     | Imágenes del producto (múltiples)        |
+| `gender`          | enumeration  | ✅ Sí     | Género: `boy`, `girl`                    |
+| `tag`             | enumeration  | ❌ No     | Etiqueta: `New`, `Outlet`, `Favourite`   |
+| `type`            | enumeration  | ❌ No     | Tipo: `outfit`, `pelele`, `dress`        |
+| `visible`         | boolean      | ❌ No     | Visibilidad en el catálogo               |
+| `sold`            | boolean      | ❌ No     | Si el producto está vendido (def: false) |
+| `stock`           | biginteger   | ✅ Sí     | Cantidad en inventario (def: 0, mín: 0) |
+| `seo_title`       | string       | ❌ No     | Título para SEO                          |
+| `seo_description` | text         | ❌ No     | Descripción meta para SEO                |
+| `slug`            | uid          | ❌ No     | Slug único para URLs (generado)          |
+| `categories`      | relation     | ❌ No     | Relación many-to-many con Categoría      |
+| `subcategories`   | relation     | ❌ No     | Relación many-to-many con Subcategoría   |
 
-**Schema JSON:**
+**Ejemplo de respuesta API:**
 
 ```json
 {
-  "kind": "collectionType",
-  "collectionName": "productos",
-  "info": {
-    "singularName": "producto",
-    "pluralName": "productos",
-    "displayName": "producto"
-  },
-  "options": {
-    "draftAndPublish": true
-  },
-  "attributes": {
-    "nombre": { "type": "string", "required": true },
-    "precio": { "type": "decimal", "required": true },
-    "descripcion": { "type": "blocks" },
-    "imagen": {
-      "type": "media",
-      "multiple": true,
-      "required": true,
-      "allowedTypes": ["images", "files"]
-    },
-    "vendido": { "type": "boolean" },
-    "stock": { "type": "integer" },
-    "slug": { "type": "uid", "required": true }
+  "data": {
+    "id": 1,
+    "documentId": "abc123xyz",
+    "name": "Vestido Floral",
+    "price": 49.99,
+    "discount_price": 39.99,
+    "description": null,
+    "gender": "girl",
+    "tag": "New",
+    "type": "dress",
+    "visible": true,
+    "sold": false,
+    "stock": 15,
+    "seo_title": "Vestido Floral para Niña | Irean",
+    "seo_description": "Hermoso vestido floral para niña...",
+    "slug": "vestido-floral",
+    "createdAt": "2024-11-07T10:30:00.000Z",
+    "updatedAt": "2024-11-07T10:30:00.000Z",
+    "publishedAt": "2024-11-07T10:30:00.000Z",
+    "categories": [
+      { "id": 2, "name": "Vestidos" }
+    ],
+    "subcategories": [
+      { "id": 5, "name": "Vestidos Casuales" }
+    ]
   }
 }
 ```
 
-### 2. Categoría (`api::categoria.categoria`)
+### 2. Categoría (`api::category.category`)
 
-Categoría principal de productos.
-
-**Atributos:**
-
-| Campo           | Tipo     | Requerido | Descripción                            |
-| --------------- | -------- | --------- | -------------------------------------- |
-| `nombre`        | string   | ✅ Sí     | Nombre de la categoría                 |
-| `descripcion`   | string   | ❌ No     | Descripción breve                      |
-| `subcategorias` | relation | ❌ No     | Relación one-to-many con Subcategorías |
-| `producto`      | relation | ❌ No     | Relación one-to-one con Producto       |
-
-### 3. Subcategoría (`api::subcategoria.subcategoria`)
-
-Subcategoría dentro de una categoría.
+Categoría principal de productos. Soporta internacionalización (i18n).
 
 **Atributos:**
 
-| Campo         | Tipo     | Requerido | Descripción                        |
-| ------------- | -------- | --------- | ---------------------------------- |
-| `nombre`      | string   | ❌ No     | Nombre de la subcategoría          |
-| `descripcion` | string   | ❌ No     | Descripción breve                  |
-| `categoria`   | relation | ❌ No     | Relación many-to-one con Categoría |
-| `producto`    | relation | ❌ No     | Relación one-to-one con Producto   |
+| Campo           | Tipo     | Requerido | i18n | Descripción                              |
+| --------------- | -------- | --------- | ---- | ---------------------------------------- |
+| `name`          | string   | ✅ Sí     | ✅   | Nombre de la categoría                   |
+| `description`   | text     | ❌ No     | ✅   | Descripción breve                        |
+| `slug`          | uid      | ✅ Sí     | ❌   | Slug único para URLs (generado)          |
+| `image`         | media    | ✅ Sí     | ✅   | Imagen de la categoría                   |
+| `visible`       | boolean  | ✅ Sí     | ✅   | Visibilidad (def: true)                  |
+| `seo_title`     | string   | ❌ No     | ✅   | Título para SEO                          |
+| `seo_description` | text   | ❌ No     | ✅   | Descripción meta para SEO                |
+| `subcategories` | relation | ❌ No     | ❌   | Relación one-to-many con Subcategorías   |
+| `products`      | relation | ❌ No     | ❌   | Relación many-to-many con Productos      |
+
+> **Nota sobre i18n**: Los campos marcados con ✅ soportan múltiples idiomas. Usa el header `X-Locale` en requests para especificar idioma.
+
+### 3. Subcategoría (`api::subcategory.subcategory`)
+
+Subcategoría dentro de una categoría. Soporta internacionalización (i18n).
+
+**Atributos:**
+
+| Campo           | Tipo     | Requerido | i18n | Descripción                              |
+| --------------- | -------- | --------- | ---- | ---------------------------------------- |
+| `name`          | string   | ❌ No     | ✅   | Nombre de la subcategoría                |
+| `description`   | text     | ❌ No     | ✅   | Descripción breve                        |
+| `slug`          | uid      | ❌ No     | ❌   | Slug único para URLs (generado)          |
+| `visible`       | boolean  | ❌ No     | ✅   | Visibilidad en el catálogo               |
+| `category`      | relation | ❌ No     | ❌   | Relación many-to-one con Categoría       |
+| `products`      | relation | ❌ No     | ❌   | Relación many-to-many con Productos      |
+
+> **Nota sobre i18n**: Los campos marcados con ✅ soportan múltiples idiomas.
 
 ### Diagrama de Relaciones
 
 ```
-┌─────────────┐         ┌─────────────┐         ┌─────────────┐
-│  Categoria  │         │  Producto   │         │Subcategoria │
-├─────────────┤         ├─────────────┤         ├─────────────┤
-│ id          │◄───────┤ id          ├────────►│ id          │
-│ nombre      │ 1:1    │ nombre      │   1:1   │ nombre      │
-│ descripcion │        │ precio      │         │ descripcion │
-│             │        │ imagen[]    │         │             │
-│             │        │ stock       │         │             │
-└─────┬───────┘        │ slug        │         └──────▲──────┘
-      │ 1              └─────────────┘                │
-      │                                              n │
-      └──────────────────────────────────────────────-┘
-                    Categoria tiene muchas
-                      Subcategorias
+                    ┌──────────────┐
+                    │   Producto   │
+                    ├──────────────┤
+                    │ id           │
+                    │ name         │
+                    │ price        │
+                    │ gender       │
+                    │ stock        │
+                    └────┬──────┬──┘
+                         │      │
+                    M:M  │      │  M:M
+                         │      │
+        ┌────────────────┘      └─────────────────┐
+        │                                         │
+┌───────▼────────────┐                   ┌────────▼──────────┐
+│   Categoría        │                   │   Subcategoría    │
+├────────────────────┤       1:N         ├───────────────────┤
+│ id                 │◄─────────────────┤ id                │
+│ name               │                  │ name              │
+│ slug               │                  │ slug              │
+│ image              │                  │ category_id       │
+│ visible            │                  │ visible           │
+│ seo_title          │                  │ seo_title         │
+└────────────────────┘                  └───────────────────┘
+
+Relaciones:
+- Categoría ◄──M:M──► Producto
+- Subcategoría ◄──M:M──► Producto
+- Categoría ◄──1:N──► Subcategoría
 ```
 
 ---
@@ -491,7 +526,7 @@ backend/
 
 ## 🔌 API Endpoints
 
-Strapi genera automáticamente endpoints REST para cada content type:
+Strapi genera automáticamente endpoints REST para cada content type. Los endpoints usan inglés:
 
 ### Base URL
 
@@ -501,31 +536,31 @@ Strapi genera automáticamente endpoints REST para cada content type:
 ### Productos
 
 ```http
-GET    /api/productos          # Listar todos los productos
-GET    /api/productos/:id      # Obtener un producto específico
-POST   /api/productos          # Crear nuevo producto (requiere auth)
-PUT    /api/productos/:id      # Actualizar producto (requiere auth)
-DELETE /api/productos/:id      # Eliminar producto (requiere auth)
+GET    /api/products           # Listar todos los productos
+GET    /api/products/:id       # Obtener un producto específico
+POST   /api/products           # Crear nuevo producto (requiere auth)
+PUT    /api/products/:id       # Actualizar producto (requiere auth)
+DELETE /api/products/:id       # Eliminar producto (requiere auth)
 ```
 
 ### Categorías
 
 ```http
-GET    /api/categorias         # Listar todas las categorías
-GET    /api/categorias/:id     # Obtener una categoría específica
-POST   /api/categorias         # Crear nueva categoría (requiere auth)
-PUT    /api/categorias/:id     # Actualizar categoría (requiere auth)
-DELETE /api/categorias/:id     # Eliminar categoría (requiere auth)
+GET    /api/categories         # Listar todas las categorías
+GET    /api/categories/:id     # Obtener una categoría específica
+POST   /api/categories         # Crear nueva categoría (requiere auth)
+PUT    /api/categories/:id     # Actualizar categoría (requiere auth)
+DELETE /api/categories/:id     # Eliminar categoría (requiere auth)
 ```
 
 ### Subcategorías
 
 ```http
-GET    /api/subcategorias      # Listar todas las subcategorías
-GET    /api/subcategorias/:id  # Obtener una subcategoría específica
-POST   /api/subcategorias      # Crear nueva subcategoría (requiere auth)
-PUT    /api/subcategorias/:id  # Actualizar subcategoría (requiere auth)
-DELETE /api/subcategorias/:id  # Eliminar subcategoría (requiere auth)
+GET    /api/subcategories      # Listar todas las subcategorías
+GET    /api/subcategories/:id  # Obtener una subcategoría específica
+POST   /api/subcategories      # Crear nueva subcategoría (requiere auth)
+PUT    /api/subcategories/:id  # Actualizar subcategoría (requiere auth)
+DELETE /api/subcategories/:id  # Eliminar subcategoría (requiere auth)
 ```
 
 ### Health Check
@@ -563,23 +598,31 @@ GET    /_health                # Verificar estado del servidor
 
 ```bash
 # Obtener todos los productos con relaciones
-curl http://localhost:1337/api/productos?populate=*
+curl http://localhost:1337/api/products?populate=*
 
 # Obtener productos filtrados por precio
-curl http://localhost:1337/api/productos?filters[precio][$gte]=100&filters[precio][$lte]=500
+curl http://localhost:1337/api/products?filters[price][$gte]=100&filters[price][$lte]=500
+
+# Obtener productos filtrados por género y ordenar
+curl http://localhost:1337/api/products?filters[gender][$eq]=girl&sort=price:asc
 
 # Crear un producto (requiere token JWT)
-curl -X POST http://localhost:1337/api/productos \
+curl -X POST http://localhost:1337/api/products \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{
     "data": {
-      "nombre": "iPhone 15 Pro",
-      "precio": 999.99,
-      "stock": 10,
-      "slug": "iphone-15-pro"
+      "name": "Vestido Floral",
+      "price": 49.99,
+      "stock": 15,
+      "gender": "girl",
+      "tag": "New",
+      "type": "dress"
     }
   }'
+
+# Obtener categorías con sus productos (populadas)
+curl http://localhost:1337/api/categories?populate[products]=*&populate[subcategories]=*
 ```
 
 > 📖 **Documentación completa de la API**: Ver [`API.md`](./API.md)
