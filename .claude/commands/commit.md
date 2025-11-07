@@ -96,6 +96,11 @@ If user requests PR creation with `--pr` flag or confirms they want to create on
 - Maximum 100 characters for commit message
 - No period at the end of subject
 - Scope is optional but recommended when relevant
+- **🚫 NEVER include**:
+  - `🤖 Generated with Claude Code`
+  - `Co-Authored-By: Claude <noreply@anthropic.com>`
+  - Any AI attribution signatures
+  - Use standard Conventional Commits format only
 
 **Pull Request**:
 - Only on feature branches (not main)
