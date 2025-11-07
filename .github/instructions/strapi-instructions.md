@@ -8,16 +8,18 @@ applyTo: "src/api/**/*.{ts,js}"
 
 ```
 src/api/[content-type-name]/
+  ├── content-types/
+  │   └── [content-type-name]/
+  │       └── schema.json
   ├── controllers/
   │   └── [content-type-name].ts
   ├── services/
   │   └── [content-type-name].ts
-  ├── routes/
-  │   └── [content-type-name].ts
-  └── content-types/
-      └── [content-type-name]/
-          └── schema.json
+  └── routes/
+      └── [content-type-name].ts
 ```
+
+**Project's actual content types**: `product`, `category`, `subcategory`, `order`
 
 ## 🎯 Controllers
 
@@ -27,13 +29,13 @@ src/api/[content-type-name]/
 import { factories } from "@strapi/strapi";
 
 export default factories.createCoreController(
-  "api::restaurant.restaurant",
+  "api::product.product",
   ({ strapi }) => ({
     // Método 1: Action completamente personalizado
     async customAction(ctx) {
       try {
         const data = await strapi
-          .service("api::restaurant.restaurant")
+          .service("api::product.product")
           .customLogic();
         ctx.body = { data };
       } catch (err) {
@@ -51,7 +53,7 @@ export default factories.createCoreController(
 
       // Llamar al servicio
       const { results, pagination } = await strapi
-        .service("api::restaurant.restaurant")
+        .service("api::product.product")
         .find(sanitizedQueryParams);
 
       // Sanitizar output
@@ -74,7 +76,7 @@ export default factories.createCoreController(
       const sanitizedQueryParams = await this.sanitizeQuery(ctx);
 
       const entity = await strapi
-        .documents("api::restaurant.restaurant")
+        .documents("api::product.product")
         .findOne({ documentId: id, ...sanitizedQueryParams });
 
       const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
@@ -96,7 +98,7 @@ async customAction(ctx) {
   }
 
   // 2. Llamar al servicio (separar lógica de negocio)
-  const result = await strapi.service('api::restaurant.restaurant').customLogic(
+  const result = await strapi.service('api::product.product').customLogic(
     ctx.request.body
   )
 
@@ -109,7 +111,7 @@ async customAction(ctx) {
 
 // ❌ MAL: Lógica de negocio en el controller
 async customAction(ctx) {
-  const restaurant = await strapi.db.query('api::restaurant.restaurant').findOne({
+  const product = await strapi.db.query('api::product.product').findOne({
     where: { name: ctx.request.body.name }
   })
   // Evitar lógica compleja aquí
@@ -124,7 +126,7 @@ async customAction(ctx) {
 import { factories } from "@strapi/strapi";
 
 export default factories.createCoreService(
-  "api::restaurant.restaurant",
+  "api::product.product",
   ({ strapi }) => ({
     // Método 1: Servicio completamente personalizado
     async customLogic(data) {
@@ -139,7 +141,7 @@ export default factories.createCoreService(
 
         // Crear documento usando Document Service API
         const document = await strapi
-          .documents("api::restaurant.restaurant")
+          .documents("api::product.product")
           .create({
             data: processed,
           });
@@ -180,8 +182,8 @@ export default factories.createCoreService(
 
     async getExtraData(id: string) {
       // Consultas adicionales
-      return strapi.db.query("api::extra-data.extra-data").findOne({
-        where: { restaurantId: id },
+      return strapi.db.query("api::category.category").findOne({
+        where: { productId: id },
       });
     },
   })
@@ -192,33 +194,34 @@ export default factories.createCoreService(
 
 ```typescript
 // ✅ BIEN: Usar Document Service API (Strapi 5+)
-const document = await strapi.documents("api::restaurant.restaurant").findOne({
+const document = await strapi.documents("api::product.product").findOne({
   documentId: id,
-  populate: ["categories", "owner"],
+  populate: ["categories", "subcategories"],
 });
 
 // Crear documento
-const newDoc = await strapi.documents("api::restaurant.restaurant").create({
+const newDoc = await strapi.documents("api::product.product").create({
   data: {
-    name: "Restaurant Name",
-    description: "Description",
+    name: "Product Name",
+    description: "Product Description",
+    price: 99.99,
   },
   populate: ["categories"],
 });
 
 // Actualizar documento
-const updated = await strapi.documents("api::restaurant.restaurant").update({
+const updated = await strapi.documents("api::product.product").update({
   documentId: id,
-  data: { name: "New Name" },
+  data: { name: "New Product Name" },
 });
 
 // Eliminar documento
-await strapi.documents("api::restaurant.restaurant").delete({
+await strapi.documents("api::product.product").delete({
   documentId: id,
 });
 
 // Contar documentos
-const count = await strapi.documents("api::restaurant.restaurant").count({
+const count = await strapi.documents("api::product.product").count({
   filters: { published: true },
 });
 ```
@@ -227,22 +230,22 @@ const count = await strapi.documents("api::restaurant.restaurant").count({
 
 ```typescript
 // Para consultas más complejas
-const restaurants = await strapi.db
-  .query("api::restaurant.restaurant")
+const products = await strapi.db
+  .query("api::product.product")
   .findMany({
     where: {
       $or: [
-        { name: { $containsi: "pizza" } },
-        { description: { $containsi: "pizza" } },
+        { name: { $containsi: "dress" } },
+        { description: { $containsi: "dress" } },
       ],
     },
     populate: {
       categories: true,
-      owner: {
-        select: ["username", "email"],
+      subcategories: {
+        select: ["name", "slug"],
       },
     },
-    orderBy: { createdAt: "desc" },
+    orderBy: { price: "asc" },
     limit: 10,
     offset: 0,
   });
@@ -255,7 +258,7 @@ const restaurants = await strapi.db
 ```typescript
 import { factories } from "@strapi/strapi";
 
-export default factories.createCoreRouter("api::restaurant.restaurant", {
+export default factories.createCoreRouter("api::product.product", {
   prefix: "", // Custom prefix
   only: ["find", "findOne"], // Solo estos métodos
   except: ["delete"], // Excluir estos métodos
@@ -266,10 +269,10 @@ export default factories.createCoreRouter("api::restaurant.restaurant", {
       middlewares: [],
     },
     findOne: {
-      policies: ["is-owner"],
+      policies: ["is-authenticated"],
     },
     create: {
-      middlewares: ["api::restaurant.validate-data"],
+      middlewares: ["api::product.validate-data"],
     },
   },
 });
@@ -282,8 +285,8 @@ export default {
   routes: [
     {
       method: "GET",
-      path: "/restaurants/featured",
-      handler: "restaurant.findFeatured",
+      path: "/products/on-sale",
+      handler: "product.findOnSale",
       config: {
         policies: [],
         middlewares: [],
@@ -291,21 +294,21 @@ export default {
     },
     {
       method: "POST",
-      path: "/restaurants/:documentId/toggle-featured",
-      handler: "restaurant.toggleFeatured",
+      path: "/products/:documentId/add-to-wishlist",
+      handler: "product.addToWishlist",
       config: {
         policies: ["plugin::users-permissions.isAuthenticated"],
       },
     },
     {
       method: "GET",
-      path: "/restaurants/search/:term",
-      handler: "restaurant.search",
+      path: "/products/search/:term",
+      handler: "product.search",
     },
     {
       method: "GET",
-      path: "/restaurants/:category/:id",
-      handler: "restaurant.findOneByCategory",
+      path: "/products/category/:categorySlug",
+      handler: "product.findByCategory",
     },
   ],
 };
@@ -316,23 +319,16 @@ export default {
 ### Custom Policy
 
 ```typescript
-// src/api/restaurant/policies/is-owner.ts
+// src/api/product/policies/is-admin.ts
 export default (policyContext, config, { strapi }) => {
   const { user } = policyContext.state;
-  const { params } = policyContext;
 
   if (!user) {
     return false;
   }
 
-  // Verificar ownership
-  const restaurant = await strapi
-    .documents("api::restaurant.restaurant")
-    .findOne({
-      documentId: params.id,
-    });
-
-  return restaurant && restaurant.owner.id === user.id;
+  // Verificar si es admin
+  return user.role && user.role.type === 'admin';
 };
 ```
 
@@ -355,14 +351,18 @@ config: {
 ### Custom Middleware
 
 ```typescript
-// src/api/restaurant/middlewares/validate-data.ts
+// src/api/product/middlewares/validate-data.ts
 export default (config, { strapi }) => {
   return async (ctx, next) => {
     const { body } = ctx.request;
 
     // Validación custom
     if (!body.name || body.name.length < 3) {
-      return ctx.badRequest("Name must be at least 3 characters");
+      return ctx.badRequest("Product name must be at least 3 characters");
+    }
+
+    if (!body.price || body.price < 0) {
+      return ctx.badRequest("Price must be a positive number");
     }
 
     // Continuar con el siguiente middleware/controller
@@ -370,7 +370,7 @@ export default (config, { strapi }) => {
 
     // Post-processing (opcional)
     if (ctx.response.status === 200) {
-      strapi.log.info("Data validated successfully");
+      strapi.log.info("Product data validated successfully");
     }
   };
 };
@@ -381,12 +381,12 @@ export default (config, { strapi }) => {
 ```json
 {
   "kind": "collectionType",
-  "collectionName": "restaurants",
+  "collectionName": "products",
   "info": {
-    "singularName": "restaurant",
-    "pluralName": "restaurants",
-    "displayName": "Restaurant",
-    "description": "A restaurant entity"
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": "E-commerce product"
   },
   "options": {
     "draftAndPublish": true
@@ -395,22 +395,27 @@ export default (config, { strapi }) => {
   "attributes": {
     "name": {
       "type": "string",
+      "required": true
+    },
+    "price": {
+      "type": "decimal",
       "required": true,
-      "unique": true
+      "min": 0
     },
     "description": {
-      "type": "text"
+      "type": "blocks"
     },
     "categories": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::category.category",
-      "inversedBy": "restaurants"
+      "inversedBy": "products"
     },
-    "owner": {
+    "subcategories": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user"
+      "relation": "manyToMany",
+      "target": "api::subcategory.subcategory",
+      "inversedBy": "products"
     }
   }
 }
@@ -420,18 +425,15 @@ export default (config, { strapi }) => {
 
 ```typescript
 // ✅ BIEN: Populate estratégico
-const restaurants = await strapi
-  .documents("api::restaurant.restaurant")
+const products = await strapi
+  .documents("api::product.product")
   .findMany({
     populate: {
       categories: {
         select: ["name", "slug"],
       },
-      owner: {
-        select: ["username", "email"],
-        populate: {
-          avatar: true,
-        },
+      subcategories: {
+        select: ["name", "slug"],
       },
     },
   });
@@ -439,11 +441,13 @@ const restaurants = await strapi
 // ✅ BIEN: Populate profundo
 populate: {
   categories: {
+    select: ["name", "slug"],
     populate: {
-      subcategories: {
-        populate: ["icon"];
-      }
-    }
+      image: true,
+    },
+  },
+  subcategories: {
+    select: ["name", "slug"],
   }
 }
 
@@ -458,11 +462,11 @@ populate: "*"; // Evitar en producción
 npm run strapi ts:generate-types
 
 // Usar tipos generados
-import type { Restaurant, Category } from '../../../types/generated/contentTypes'
+import type { Product, Category, Subcategory } from '../../../types/generated/contentTypes'
 
 // En servicios
-async createRestaurant(data: Partial<Restaurant>): Promise<Restaurant> {
-  return await strapi.documents('api::restaurant.restaurant').create({
+async createProduct(data: Partial<Product>): Promise<Product> {
+  return await strapi.documents('api::product.product').create({
     data
   })
 }
@@ -475,13 +479,13 @@ async createRestaurant(data: Partial<Restaurant>): Promise<Restaurant> {
 async create(ctx) {
   const data = ctx.request.body
   // Evitar procesamiento complejo aquí
-  const processed = complexProcessing(data)
-  return strapi.db.query('api::restaurant.restaurant').create({ data: processed })
+  const processed = applyDiscount(data)
+  return strapi.db.query('api::product.product').create({ data: processed })
 }
 
 // ✅ BIEN: Lógica en el servicio
 async create(ctx) {
-  const result = await strapi.service('api::restaurant.restaurant').create(
+  const result = await strapi.service('api::product.product').create(
     ctx.request.body
   )
   return this.transformResponse(result)
@@ -489,7 +493,7 @@ async create(ctx) {
 
 // ❌ MAL: Queries directas sin sanitización
 async find(ctx) {
-  const { results } = await strapi.service('api::restaurant.restaurant').find(ctx.query)
+  const { results } = await strapi.service('api::product.product').find(ctx.query)
   return { data: results } // Inseguro!
 }
 
@@ -498,7 +502,7 @@ async find(ctx) {
   await this.validateQuery(ctx)
   const sanitizedQueryParams = await this.sanitizeQuery(ctx)
   const { results, pagination } = await strapi
-    .service('api::restaurant.restaurant')
+    .service('api::product.product')
     .find(sanitizedQueryParams)
   const sanitizedResults = await this.sanitizeOutput(results, ctx)
   return this.transformResponse(sanitizedResults, { pagination })
@@ -535,12 +539,12 @@ async find(ctx) {
 npm run strapi ts:generate-types
 
 # Generar API completa
-npm run strapi generate api restaurant name:string description:text
+npm run strapi generate api product name:string price:decimal
 
 # Generar componentes individuales
-npm run strapi generate controller restaurant
-npm run strapi generate service restaurant
-npm run strapi generate policy is-owner
+npm run strapi generate controller product
+npm run strapi generate service product
+npm run strapi generate policy is-admin
 npm run strapi generate middleware validate-data
 
 # Development

@@ -13,7 +13,7 @@ Consult both files for complete and up-to-date information.
 
 ## Project Description
 
-This is a backend for an e-commerce web app called Irean, built with Strapi 5 and TypeScript. It provides a REST API to manage products, users, and orders, with JWT authentication and user roles. The backend is deployed on Railway and uses SQLite in development and PostgreSQL in production.
+This is a backend for an e-commerce web app called Irean, built with Strapi 5 and TypeScript. It provides a REST API to manage products, categories, orders, and users with JWT authentication and user roles. The backend is deployed on Railway and uses SQLite in development and PostgreSQL in production.
 
 ## General Architecture
 
@@ -31,27 +31,27 @@ This is a **Strapi 5** backend with TypeScript, deployed on Railway. Key structu
 Each Content Type follows this structure in `src/api/{name}/`:
 
 ```
-producto/
-├── content-types/producto/schema.json  # Field definitions and options
-├── controllers/producto.ts             # Endpoint logic (uses factories)
-├── services/producto.ts                # Reusable business logic
-└── routes/producto.ts                  # REST routes (uses factories)
+product/
+├── content-types/product/schema.json   # Field definitions and options
+├── controllers/product.ts              # Endpoint logic (uses factories)
+├── services/product.ts                 # Reusable business logic
+└── routes/product.ts                   # REST routes (uses factories)
 ```
 
 **Critical rule**: Use Strapi's `factories.createCore*()` to generate base code:
 
 ```typescript
 // ❌ DON'T make unnecessary manual implementations
-export default factories.createCoreController("api::producto.producto");
-export default factories.createCoreService("api::producto.producto");
-export default factories.createCoreRouter("api::producto.producto");
+export default factories.createCoreController("api::product.product");
+export default factories.createCoreService("api::product.product");
+export default factories.createCoreRouter("api::product.product");
 ```
 
 Only extend factories when you need to customize:
 
 ```typescript
 export default factories.createCoreController(
-  "api::producto.producto",
+  "api::product.product",
   ({ strapi }) => ({
     async customAction(ctx) {
       // Custom logic here
@@ -62,9 +62,9 @@ export default factories.createCoreController(
 
 ### 2. Naming Conventions
 
-- **Content Types**: Singular in code (`producto`), automatically pluralized in API (`/api/productos`)
-- **Schema files**: Use `collectionName` for SQL table name (plural): `"collectionName": "productos"`
-- **TypeScript types**: Auto-generated as `ApiProductoProducto` (format: `Api{PascalCase}{PascalCase}`)
+- **Content Types**: Singular in code (`product`), automatically pluralized in API (`/api/products`)
+- **Schema files**: Use `collectionName` for SQL table name (plural): `"collectionName": "products"`
+- **TypeScript types**: Auto-generated as `ApiProductProduct` (format: `Api{PascalCase}{PascalCase}`)
 
 ### 3. Configuration Pattern
 
@@ -142,9 +142,9 @@ Script in `scripts/seed.js`:
 npm run seed:example  # Import data.json (only on first run)
 ```
 
-**⚠️ IMPORTANT NOTE**: The current script (`seed.js`) is configured as a generic example and expects models like `article`, `author`, `category`, `global`, `about` (blog project). To use seeding in the actual e-commerce structure (`producto`, `categoria`, `subcategoria`), you would need to:
+**⚠️ IMPORTANT NOTE**: The current script (`seed.js`) is configured as a generic example. For the actual e-commerce structure (`product`, `category`, `subcategory`, `order`), you would need to:
 
-1. Create data in `data/data.json` with the correct structure, OR
+1. Create data in `data/data.json` with the correct e-commerce structure, OR
 2. Adapt `scripts/seed.js` for the project's actual content types
 
 Script features:
@@ -156,11 +156,11 @@ Script features:
 
 Strapi auto-generates:
 
-- `GET /api/productos` - List (supports filters, pagination, sort)
-- `GET /api/productos/:id` - Detail
-- `POST /api/productos` - Create
-- `PUT /api/productos/:id` - Update
-- `DELETE /api/productos/:id` - Delete
+- `GET /api/products` - List (supports filters, pagination, sort)
+- `GET /api/products/:id` - Detail
+- `POST /api/products` - Create
+- `PUT /api/products/:id` - Update
+- `DELETE /api/products/:id` - Delete
 
 Global configuration in `config/api.ts`:
 
