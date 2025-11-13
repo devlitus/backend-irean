@@ -57,6 +57,7 @@ chmod +x scripts/migrate-railway-cli.sh
 ```
 
 El script:
+
 1. ✅ Valida que Railway CLI está instalado
 2. ✅ Verifica tu autenticación
 3. ✅ Hace backup de desarrollo
@@ -289,6 +290,7 @@ gh secret set RAILWAY_PROJECT_PROD --body "proj_xyz789"
 ```
 
 Obtener tu RAILWAY_TOKEN:
+
 1. Ve a [Railway Settings](https://railway.app/account/tokens)
 2. Crea un nuevo token
 3. Cópialo a GitHub Secrets
@@ -316,12 +318,12 @@ railway --project <PROD_ID> run pg_basebackup --help
 
 ## Performance Esperado
 
-| Tamaño BD | Tiempo Estimado |
-|-----------|-----------------|
-| < 10 MB   | 10-30 segundos  |
-| 10-100 MB | 30-2 minutos    |
-| 100-500 MB | 2-5 minutos    |
-| 500 MB+   | 5-15 minutos    |
+| Tamaño BD  | Tiempo Estimado |
+| ---------- | --------------- |
+| < 10 MB    | 10-30 segundos  |
+| 10-100 MB  | 30-2 minutos    |
+| 100-500 MB | 2-5 minutos     |
+| 500 MB+    | 5-15 minutos    |
 
 ## Checklist Pre-Migración
 
@@ -362,3 +364,4 @@ ls -lah /tmp/railway-migration/
 ```
 
 ¿Necesitas ayuda con algo específico?
+npm run strapi transfer -- --to https://example.com/admin --to-token my-transfer-token --force
