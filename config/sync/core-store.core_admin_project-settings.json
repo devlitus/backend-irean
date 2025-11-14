@@ -1,0 +1,19 @@
+{
+  "key": "core_admin_project-settings",
+  "value": {
+    "menuLogo": {
+      "name": "logo_irean.png",
+      "hash": "logo_irean_0b61e4002e",
+      "url": "/uploads/logo_irean_0b61e4002e.png",
+      "width": 300,
+      "height": 300,
+      "ext": ".png",
+      "size": 28.19,
+      "provider": "local"
+    },
+    "authLogo": {}
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
+}
