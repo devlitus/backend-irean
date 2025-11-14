@@ -1,9 +1,16 @@
 'use strict';
 
-const fs = require('fs-extra');
-const path = require('path');
-const mime = require('mime-types');
-const { categories, authors, articles, global, about } = require('../data/data.json');
+/**
+ * Script de seed para desarrollo
+ * Carga la sincronización de datos reales de la tienda
+ * 
+ * Uso:
+ * npm run seed:dev
+ * o
+ * node scripts/seed.js
+ */
+
+const seedDevelopment = require('./seed-dev');
 
 async function seedExampleApp() {
   const shouldImportSeedData = await isFirstRun();
@@ -262,9 +269,13 @@ async function main() {
 
   app.log.level = 'error';
 
-  await seedExampleApp();
-  await app.destroy();
+  try {
+    await seedDevelopment();
+  } catch (error) {
+    console.error('❌ Error en el proceso de seed:', error);
+  }
 
+  await app.destroy();
   process.exit(0);
 }
 
