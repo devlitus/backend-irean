@@ -6,7 +6,7 @@ export default () => ({
     },
   },
   "config-sync": {
-    enabled: true,
+    enabled: false,
     config: {
       syncDir: "config/sync/",
       minify: false,
