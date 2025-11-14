@@ -18,7 +18,15 @@ export default {
    * Ejecuta el seed de producción automáticamente
    */
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
-    // El seed en producción debe ejecutarse manualmente cuando sea necesario
-    // No ejecutar automáticamente para evitar problemas en Railway
+    // Solo ejecutar seed en producción
+    if (process.env.NODE_ENV === 'production') {
+      try {
+        const seedProduction = require('../scripts/seed-production.js');
+        await seedProduction();
+      } catch (error) {
+        console.error('Error ejecutando seed de producción:', error);
+        // No bloquear el inicio de Strapi si falla el seed
+      }
+    }
   },
 };

@@ -3,10 +3,6 @@ import path from 'path';
 export default ({ env }) => {
   const client = env('DATABASE_CLIENT', 'sqlite');
 
-  // Check if DATABASE_URL is valid (not a template string or empty)
-  const databaseUrl = env('DATABASE_URL');
-  const isValidDatabaseUrl = databaseUrl && !databaseUrl.includes('${') && databaseUrl.trim().length > 0;
-
   const connections = {
     mysql: {
       connection: {
@@ -28,7 +24,7 @@ export default ({ env }) => {
     },
     postgres: {
       connection: {
-        ...(isValidDatabaseUrl && { connectionString: databaseUrl }),
+        connectionString: env('DATABASE_URL'),
         host: env('DATABASE_HOST', 'localhost'),
         port: env.int('DATABASE_PORT', 5432),
         database: env('DATABASE_NAME', 'strapi'),

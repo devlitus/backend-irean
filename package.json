@@ -42,9 +42,6 @@
     "node": ">=18.0.0 <=22.x.x",
     "npm": ">=6.0.0"
   },
-  "overrides": {
-    "file-type": "18.7.0"
-  },
   "strapi": {
     "uuid": "a49cbdbe-ef62-42a5-bd4b-2d9535854984",
     "installId": "69659bdc99d50f06d55f96e1e4111267f513056d7ae7bbe211d57731e8217269"
