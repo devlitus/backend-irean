@@ -15,18 +15,22 @@ export default {
    * An asynchronous bootstrap function that runs before
    * your application gets started.
    *
-   * Ejecuta el seed de producción automáticamente
+   * Ejecuta el seed automáticamente según el entorno
    */
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
-    // Solo ejecutar seed en producción
-    if (process.env.NODE_ENV === 'production') {
-      try {
+    try {
+      if (process.env.NODE_ENV === 'production') {
+        // Seed de producción para main/production
         const seedProduction = require('../scripts/seed-production.js');
         await seedProduction();
-      } catch (error) {
-        console.error('Error ejecutando seed de producción:', error);
-        // No bloquear el inicio de Strapi si falla el seed
+      } else if (process.env.NODE_ENV === 'development') {
+        // Seed de desarrollo para dev local y Railway development
+        const seedDevelopment = require('../scripts/seed-dev.js');
+        await seedDevelopment();
       }
+    } catch (error) {
+      console.error('Error ejecutando seed:', error);
+      // No bloquear el inicio de Strapi si falla el seed
     }
   },
 };
