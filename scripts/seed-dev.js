@@ -116,15 +116,15 @@ async function seedDevelopment() {
 async function shouldRunSeed() {
   try {
     const pluginStore = strapi.store({
-      environment: strapi.config.environment,
-      type: 'type',
+      type: 'setup',
       name: 'setup-ecommerce-dev',
+      environment: strapi.config.environment,
     });
     const hasRun = await pluginStore.get({ key: 'seedDevelopmentHasRun' });
     await pluginStore.set({ key: 'seedDevelopmentHasRun', value: true });
     return !hasRun;
   } catch (error) {
-    console.log('ℹ️  No se pudo verificar estado del seed, continuando...');
+    console.log('⚠️  No se pudo verificar estado del seed, continuando...');
     return true;
   }
 }
@@ -132,11 +132,12 @@ async function shouldRunSeed() {
 async function syncCategories() {
   for (const categoryData of CATEGORIES_DATA) {
     try {
-      // Verificar si la categoría ya existe
+      // Verificar si la categoría ya existe en español (idioma base)
       const existing = await strapi
         .documents('api::category.category')
         .findMany({
           filters: { name: categoryData.names['es-ES'] },
+          locale: 'es-ES',
         });
 
       if (existing.length > 0) {
@@ -146,51 +147,49 @@ async function syncCategories() {
         continue;
       }
 
-      // Crear la categoría en español
+      // Crear la categoría en español (idioma por defecto)
       const category = await strapi
         .documents('api::category.category')
-        .create({
-          data: {
+        .create(
+          {
             name: categoryData.names['es-ES'],
             slug: categoryData.names['es-ES'],
             visible: true,
-            locale: 'es-ES',
           },
-        });
+          { locale: 'es-ES' }
+        );
 
       console.log(`  ✅ Categoría creada: "${categoryData.names['es-ES']}"`);
 
-      // Crear versiones en otros idiomas (localización)
+      // Crear localizaciones en otros idiomas
       try {
         // Versión en inglés
-        await strapi.documents('api::category.category').create({
-          data: {
+        await strapi.documents('api::category.category').create(
+          {
             name: categoryData.names.en,
             slug: categoryData.names.en,
             visible: true,
-            locale: 'en',
           },
-          documentId: category.documentId,
-        });
+          { documentId: category.documentId, locale: 'en' }
+        );
         console.log(`    └─ Versión EN creada`);
       } catch (err) {
-        console.log(`    └─ EN ya existe o no es necesario crear`);
+        console.log(`    └─ EN ya existe o error: ${err.message}`);
       }
 
       try {
         // Versión en catalán
-        await strapi.documents('api::category.category').create({
-          data: {
+        await strapi.documents('api::category.category').create(
+          {
             name: categoryData.names.ca,
             slug: categoryData.names.ca,
             visible: true,
-            locale: 'ca',
           },
-          documentId: category.documentId,
-        });
+          { documentId: category.documentId, locale: 'ca' }
+        );
         console.log(`    └─ Versión CA creada`);
       } catch (err) {
-        console.log(`    └─ CA ya existe o no es necesario crear`);
+        console.log(`    └─ CA ya existe o error: ${err.message}`);
       }
     } catch (error) {
       console.error(
@@ -204,11 +203,12 @@ async function syncCategories() {
 async function syncSubcategories() {
   for (const subcategoryData of SUBCATEGORIES_DATA) {
     try {
-      // Verificar si la subcategoría ya existe
+      // Verificar si la subcategoría ya existe en español (idioma base)
       const existing = await strapi
         .documents('api::subcategory.subcategory')
         .findMany({
           filters: { name: subcategoryData.names['es-ES'] },
+          locale: 'es-ES',
         });
 
       if (existing.length > 0) {
@@ -218,11 +218,12 @@ async function syncSubcategories() {
         continue;
       }
 
-      // Obtener la categoría padre
+      // Obtener la categoría padre (en español)
       const parentCategory = await strapi
         .documents('api::category.category')
         .findMany({
           filters: { name: subcategoryData.categoryName },
+          locale: 'es-ES',
         });
 
       if (parentCategory.length === 0) {
@@ -232,56 +233,54 @@ async function syncSubcategories() {
         continue;
       }
 
-      // Crear la subcategoría en español
+      // Crear la subcategoría en español (idioma por defecto)
       const subcategory = await strapi
         .documents('api::subcategory.subcategory')
-        .create({
-          data: {
+        .create(
+          {
             name: subcategoryData.names['es-ES'],
             slug: subcategoryData.names['es-ES'],
             visible: true,
             category: parentCategory[0].documentId, // Vincular a la categoría padre
-            locale: 'es-ES',
           },
-        });
+          { locale: 'es-ES' }
+        );
 
       console.log(
         `  ✅ Subcategoría creada: "${subcategoryData.names['es-ES']}" → "${subcategoryData.categoryName}"`
       );
 
-      // Crear versiones en otros idiomas
+      // Crear localizaciones en otros idiomas
       try {
         // Versión en inglés
-        await strapi.documents('api::subcategory.subcategory').create({
-          data: {
+        await strapi.documents('api::subcategory.subcategory').create(
+          {
             name: subcategoryData.names.en,
             slug: subcategoryData.names.en,
             visible: true,
             category: parentCategory[0].documentId,
-            locale: 'en',
           },
-          documentId: subcategory.documentId,
-        });
+          { documentId: subcategory.documentId, locale: 'en' }
+        );
         console.log(`    └─ Versión EN creada`);
       } catch (err) {
-        console.log(`    └─ EN ya existe o no es necesario crear`);
+        console.log(`    └─ EN ya existe o error: ${err.message}`);
       }
 
       try {
         // Versión en catalán
-        await strapi.documents('api::subcategory.subcategory').create({
-          data: {
+        await strapi.documents('api::subcategory.subcategory').create(
+          {
             name: subcategoryData.names.ca,
             slug: subcategoryData.names.ca,
             visible: true,
             category: parentCategory[0].documentId,
-            locale: 'ca',
           },
-          documentId: subcategory.documentId,
-        });
+          { documentId: subcategory.documentId, locale: 'ca' }
+        );
         console.log(`    └─ Versión CA creada`);
       } catch (err) {
-        console.log(`    └─ CA ya existe o no es necesario crear`);
+        console.log(`    └─ CA ya existe o error: ${err.message}`);
       }
     } catch (error) {
       console.error(
@@ -295,11 +294,12 @@ async function syncSubcategories() {
 async function syncProducts() {
   for (const productData of PRODUCTS_DATA) {
     try {
-      // Verificar si el producto ya existe
+      // Verificar si el producto ya existe en español (idioma base)
       const existing = await strapi
         .documents('api::product.product')
         .findMany({
           filters: { name: productData.names['es-ES'] },
+          locale: 'es-ES',
         });
 
       if (existing.length > 0) {
@@ -309,42 +309,60 @@ async function syncProducts() {
         continue;
       }
 
-      // Crear el producto en español
+      // Crear el producto en español (idioma por defecto)
       const product = await strapi
         .documents('api::product.product')
-        .create({
-          data: {
+        .create(
+          {
             name: productData.names['es-ES'],
             gender: productData.gender,
             type: productData.type,
             price: productData.price,
             stock: productData.stock,
             visible: true,
-            locale: 'es-ES',
           },
-        });
+          { locale: 'es-ES' }
+        );
 
       console.log(
         `  ✅ Producto creado: "${productData.names['es-ES'].substring(0, 30)}..." (${productData.gender})`
       );
 
-      // Crear versión en inglés
+      // Crear localizaciones en otros idiomas
       try {
-        await strapi.documents('api::product.product').create({
-          data: {
+        // Versión en inglés
+        await strapi.documents('api::product.product').create(
+          {
             name: productData.names.en,
             gender: productData.gender,
             type: productData.type,
             price: productData.price,
             stock: productData.stock,
             visible: true,
-            locale: 'en',
           },
-          documentId: product.documentId,
-        });
+          { documentId: product.documentId, locale: 'en' }
+        );
         console.log(`    └─ Versión EN creada`);
       } catch (err) {
-        console.log(`    └─ EN ya existe o no es necesario crear`);
+        console.log(`    └─ EN ya existe o error: ${err.message}`);
+      }
+
+      try {
+        // Versión en catalán
+        await strapi.documents('api::product.product').create(
+          {
+            name: productData.names.ca,
+            gender: productData.gender,
+            type: productData.type,
+            price: productData.price,
+            stock: productData.stock,
+            visible: true,
+          },
+          { documentId: product.documentId, locale: 'ca' }
+        );
+        console.log(`    └─ Versión CA creada`);
+      } catch (err) {
+        console.log(`    └─ CA ya existe o error: ${err.message}`);
       }
     } catch (error) {
       console.error(
