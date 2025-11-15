@@ -1,158 +1,114 @@
 'use strict';
 
 /**
- * Script de seed para producción
- * Carga categorías, subcategorías y productos del e-commerce Irean
- * Se ejecuta automáticamente en el primer deploy
- *
- * Datos sincronizados:
- * - 4 Categorías (Nacimiento, Infantil, Ceremonia, Juvenil)
- * - 3 Subcategorías (Vautismo, Comunión, Acompañante)
- * - 4 Productos de ropa infantil
- * - Soporte multiidioma: ES, EN, CA
+ * Script de seed para desarrollo
+ * Sincroniza categorías, subcategorías y productos del e-commerce desde la BD
+ * Se ejecuta automáticamente al iniciar en desarrollo
  *
  * Uso:
- * - Como bootstrap: Se ejecuta automáticamente en producción
- * - Manual: npm run seed:production
+ * - Automático: Se ejecuta al iniciar Strapi en desarrollo
+ * - Manual: npm run seed:dev
+ *
+ * Estructura: Tienda de ropa infantil
+ * - Categorías: Nacimiento, Infantil, Ceremonia, Juvenil
+ * - Subcategorías: Bautismo, Comunión, Acompañante (vinculadas a Ceremonia)
+ * - Productos: Ropa infantil con género (boy/girl) y tipo (outfit, pelele, dress)
  */
 
-// Datos de categorías con soporte multiidioma
+// Datos reales de la tienda - Categorías base (documentId, nombre en español)
 const CATEGORIES_DATA = [
   {
-    names: {
-      'es-ES': 'Nacimiento',
-      en: 'Birth',
-      ca: 'Naixement',
-    },
+    documentId: 'nmqhj0kl49p84tdcdm1bixc3',
+    names: { 'es-ES': 'nacimiento', en: 'newborn', ca: 'naixament' },
   },
   {
-    names: {
-      'es-ES': 'Infantil',
-      en: 'Children',
-      ca: 'Infantil',
-    },
+    documentId: 'eydzugwmxj3ls5vj7ieoj926',
+    names: { 'es-ES': 'infantil', en: 'child', ca: 'infentil' },
   },
   {
-    names: {
-      'es-ES': 'Ceremonia',
-      en: 'Ceremony',
-      ca: 'Cerimònia',
-    },
+    documentId: 'q007nawhs1qzk7ccz61sk5yj',
+    names: { 'es-ES': 'ceremonia', en: 'ceremony', ca: 'cerimonia' },
   },
   {
-    names: {
-      'es-ES': 'Juvenil',
-      en: 'Youth',
-      ca: 'Juvenil',
-    },
+    documentId: 'b111zg7dodnv0gpqclpk0xra',
+    names: { 'es-ES': 'juvenil', en: 'juvenile', ca: 'juvenil' },
   },
 ];
 
-// Datos de subcategorías con soporte multiidioma
+// Subcategorías reales - Solo las que tienen categoría asignada
 const SUBCATEGORIES_DATA = [
   {
-    names: {
-      'es-ES': 'Vautismo',
-      en: 'Autism',
-      ca: 'Vautisme',
-    },
-    categoryName: 'Ceremonia',
+    documentId: 'b6nsyizbe0ywxbi7lbdmpny2',
+    names: { 'es-ES': 'vautismo', en: 'baptism', ca: 'bautismo' },
+    categoryName: 'ceremonia', // Vinculada a Ceremonia
   },
   {
-    names: {
-      'es-ES': 'Comunión',
-      en: 'Communion',
-      ca: 'Comunió',
-    },
-    categoryName: 'Ceremonia',
+    documentId: 'aw74feak78rgdmg152of4z0d',
+    names: { 'es-ES': 'cominion', en: 'communion', ca: 'comunió' },
+    categoryName: 'ceremonia', // Vinculada a Ceremonia
   },
   {
-    names: {
-      'es-ES': 'Acompañante',
-      en: 'Companion',
-      ca: 'Acompanyant',
-    },
-    categoryName: 'Ceremonia',
+    documentId: 'd5rmnlint4swkw09uei56i6g',
+    names: { 'es-ES': 'acompañante', en: 'companion', ca: 'acompanyant' },
+    categoryName: 'ceremonia', // Vinculada a Ceremonia
   },
 ];
 
-// Datos de productos con soporte multiidioma
+// Productos reales de la tienda
 const PRODUCTS_DATA = [
   {
-    names: {
-      'es-ES': 'Chaqueta de ceremonia azul marino',
-      en: 'Navy ceremony jacket',
-      ca: 'Jaqueta de cerimònia blau marí',
-    },
-    gender: 'niño',
-    type: 'chaqueta',
-    price: 45.99,
-    stock: 20,
+    documentId: 'tiye6harv9qprdeswtmn409o',
+    names: { 'es-ES': 'Body rosa para bebé con encaje floral y diadem', en: 'Pink baby bodysuit with floral lace and headband' },
+    gender: 'girl',
+    type: 'outfit',
+    price: 34.54,
+    stock: 5,
   },
   {
-    names: {
-      'es-ES': 'Vestido de comunión blanco',
-      en: 'White communion dress',
-      ca: 'Vestit de comunió blanc',
-    },
-    gender: 'niña',
-    type: 'vestido',
-    price: 55.5,
-    stock: 15,
+    documentId: 'dpfrlyn0lrhoeo2c92sx46r2',
+    names: { 'es-ES': 'Conjunto de punto para bebé azul con encaje', en: 'Blue knit set for baby with lace' },
+    gender: 'boy',
+    type: 'outfit',
+    price: 45.00,
+    stock: 5,
   },
   {
-    names: {
-      'es-ES': 'Pantalón gris infantil',
-      en: 'Gray children pants',
-      ca: 'Pantaló gris infantil',
-    },
-    gender: 'niño',
-    type: 'pantalón',
-    price: 25.75,
-    stock: 30,
+    documentId: 'iurd6s5g6k8jlugt0geslsf9',
+    names: { 'es-ES': 'Traje formal infantil azul marino con corbata estampada', en: 'Navy blue formal suit for children with patterned tie' },
+    gender: 'boy',
+    type: null,
+    price: 105.25,
+    stock: 4,
   },
   {
-    names: {
-      'es-ES': 'Blusa rosa pálido',
-      en: 'Pale pink blouse',
-      ca: 'Blusa rosa pàl·lid',
-    },
-    gender: 'niña',
-    type: 'blusa',
-    price: 28.99,
-    stock: 18,
+    documentId: 'kmnsbg1f3oc4ho4fcefi0sdz',
+    names: { 'es-ES': 'Vestido amarillo infantil con volantes y sombrero de paja', en: 'Yellow children dress with ruffles and straw hat' },
+    gender: 'girl',
+    type: 'dress',
+    price: 55.00,
+    stock: 3,
   },
 ];
 
-async function seedProduction() {
+async function seedDevelopment() {
   const shouldSeed = await shouldRunSeed();
 
   if (!shouldSeed) {
-    console.log(
-      '⏭️  Seed de producción ya ha sido ejecutado. Omitiendo...'
-    );
+    console.log('✅ Seed de desarrollo ya ha sido ejecutado. Omitiendo...');
     return;
   }
 
   try {
-    console.log(
-      '\n🌱 Iniciando seed de producción - Irean E-commerce'
-    );
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-
-    console.log('\n📁 Sincronizando categorías...');
+    console.log('🌱 Iniciando sincronización de datos de desarrollo...');
+    console.log('📦 Sincronizando categorías...');
     await syncCategories();
-
-    console.log('\n📂 Sincronizando subcategorías...');
+    console.log('📁 Sincronizando subcategorías...');
     await syncSubcategories();
-
-    console.log('\n📦 Sincronizando productos...');
+    console.log('👕 Sincronizando productos...');
     await syncProducts();
-
-    console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('✅ Seed de producción completado exitosamente\n');
+    console.log('✅ Seed completado exitosamente');
   } catch (error) {
-    console.error('\n❌ Error durante el seed:', error);
+    console.error('❌ Error durante el seed:', error);
     throw error;
   }
 }
@@ -160,17 +116,12 @@ async function seedProduction() {
 async function shouldRunSeed() {
   try {
     const pluginStore = strapi.store({
+      type: 'setup',
+      name: 'setup-ecommerce-dev',
       environment: strapi.config.environment,
-      type: 'type',
-      name: 'setup-ecommerce',
     });
-    const hasRun = await pluginStore.get({
-      key: 'seedProductionHasRun',
-    });
-    await pluginStore.set({
-      key: 'seedProductionHasRun',
-      value: true,
-    });
+    const hasRun = await pluginStore.get({ key: 'seedDevelopmentHasRun' });
+    await pluginStore.set({ key: 'seedDevelopmentHasRun', value: true });
     return !hasRun;
   } catch (error) {
     console.log('⚠️  No se pudo verificar estado del seed, continuando...');
@@ -422,4 +373,4 @@ async function syncProducts() {
   }
 }
 
-module.exports = seedProduction;
+module.exports = seedDevelopment;
