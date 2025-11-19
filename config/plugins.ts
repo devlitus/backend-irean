@@ -1,4 +1,7 @@
 export default () => ({
+  "strapi-import-tools": {
+    enabled: true,
+  },
   "strapi-csv-import-export": {
     config: {
       authorizedExports: ["api::product.product", "api::category.category"],

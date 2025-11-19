@@ -29,6 +29,7 @@
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
     "strapi-health-plugin": "^1.2.1",
+    "strapi-import-tools": "^1.0.3",
     "styled-components": "^6.0.0"
   },
   "devDependencies": {
