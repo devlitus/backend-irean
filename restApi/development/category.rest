@@ -6,7 +6,10 @@
 GET {{baseUrl}}/api/categories
 
 ### List all categories with populated relations
-GET {{baseUrl}}/api/categories?populate=*
+GET {{baseUrl}}/api/categories?populate=*&locale=en
 
 ### Get category by ID
 GET {{baseUrl}}/api/categories/{{id}}
+
+### Get category by ID with populated relations
+GET {{baseUrl}}/api/categories?populate[localizations][populate]

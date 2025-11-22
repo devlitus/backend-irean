@@ -36,7 +36,7 @@
       "type": "boolean",
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "required": true,
@@ -47,22 +47,6 @@
       "relation": "manyToOne",
       "target": "api::category.category",
       "inversedBy": "subcategories"
-    },
-    "seo_description": {
-      "type": "text",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "seo_title": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
     },
     "products": {
       "type": "relation",
