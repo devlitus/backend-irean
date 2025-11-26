@@ -36,7 +36,7 @@
       "type": "media",
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "multiple": true,
@@ -50,7 +50,7 @@
       "type": "boolean",
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       }
     },
@@ -58,7 +58,7 @@
       "type": "enumeration",
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "required": true,
@@ -71,7 +71,7 @@
       "type": "enumeration",
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "enum": [
@@ -84,7 +84,7 @@
       "type": "enumeration",
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "enum": [
@@ -109,7 +109,7 @@
       "type": "decimal",
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "required": true,
@@ -119,7 +119,7 @@
       "type": "decimal",
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "min": 0
@@ -128,7 +128,7 @@
       "type": "biginteger",
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "required": true,
@@ -159,10 +159,23 @@
       "type": "boolean",
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "default": false
+    },
+    "years": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "enum": [
+        "de 0 a 3 meses",
+        "de 3 meses a 3 años",
+        "de 10 años a 14 años"
+      ]
     }
   }
 }

@@ -459,7 +459,7 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }>;
     locale: Schema.Attribute.String;
@@ -500,7 +500,7 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }> &
       Schema.Attribute.DefaultTo<true>;
@@ -577,7 +577,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     discount_price: Schema.Attribute.Decimal &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }> &
       Schema.Attribute.SetMinMax<
@@ -590,14 +590,14 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }>;
     image: Schema.Attribute.Media<'images' | 'files', true> &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }>;
     locale: Schema.Attribute.String;
@@ -616,7 +616,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }> &
       Schema.Attribute.SetMinMax<
@@ -642,7 +642,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     sold: Schema.Attribute.Boolean &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }> &
       Schema.Attribute.DefaultTo<false>;
@@ -650,7 +650,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }> &
       Schema.Attribute.SetMinMax<
@@ -667,13 +667,13 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     tag: Schema.Attribute.Enumeration<['New', 'Outlet', 'Favourite']> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }>;
     type: Schema.Attribute.Enumeration<['outfit', 'pelele', 'dress']> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }>;
     updatedAt: Schema.Attribute.DateTime;
@@ -682,7 +682,19 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     visible: Schema.Attribute.Boolean &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
+        };
+      }>;
+    years: Schema.Attribute.Enumeration<
+      [
+        'de 0 a 3 meses',
+        'de 3 meses a 3 a\u00F1os',
+        'de 10 a\u00F1os a 14 a\u00F1os',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
         };
       }>;
   };
@@ -748,7 +760,7 @@ export interface ApiSubcategorySubcategory extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
-          localized: true;
+          localized: false;
         };
       }> &
       Schema.Attribute.DefaultTo<true>;
