@@ -67,7 +67,7 @@
         "girl"
       ]
     },
-    "tag": {
+    "badge": {
       "type": "enumeration",
       "pluginOptions": {
         "i18n": {
@@ -75,9 +75,9 @@
         }
       },
       "enum": [
-        "New",
-        "Outlet",
-        "Favourite"
+        "new",
+        "outlet",
+        "favourite"
       ]
     },
     "type": {

@@ -1,6 +1,6 @@
 # Category REST API
 @baseUrl=http://localhost:1337
-@id=w1ronmdbir6kz368vp3g93rv
+@id=rzlgwywg5xwbebznr2janyci
 
 ### List all categories
 GET {{baseUrl}}/api/categories
@@ -8,5 +8,19 @@ GET {{baseUrl}}/api/categories
 ### List all categories with populated relations
 GET {{baseUrl}}/api/categories?populate=*
 
+### Get categories with populated products and localizations
+GET {{baseUrl}}/api/categories?populate=products&populate=localizations
 ### Get category by ID
 GET {{baseUrl}}/api/categories/{{id}}
+
+### Get category by ID with populated relations
+GET {{baseUrl}}/api/categories/{{id}}?&populate=products&populate=localizations
+
+### Get category by ID with all products (deep populate)
+GET {{baseUrl}}/api/categories/{{id}}?populate[products][populate]=*
+
+### Get category by slug with all products
+GET {{baseUrl}}/api/categories?filters[slug][$eq]=infantiles&populate[products][populate]=*
+
+### Get all categories with their products
+GET {{baseUrl}}/api/categories?populate[products][populate]=*&populate=localizations

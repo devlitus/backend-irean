@@ -561,6 +561,12 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
+    badge: Schema.Attribute.Enumeration<['new', 'outlet', 'favourite']> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     categories: Schema.Attribute.Relation<
       'manyToMany',
       'api::category.category'
@@ -664,12 +670,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'manyToMany',
       'api::subcategory.subcategory'
     >;
-    tag: Schema.Attribute.Enumeration<['New', 'Outlet', 'Favourite']> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
     type: Schema.Attribute.Enumeration<['outfit', 'pelele', 'dress']> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {

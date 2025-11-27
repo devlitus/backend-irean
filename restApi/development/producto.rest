@@ -1,8 +1,14 @@
 @baseUrl=http://localhost:1337
-@id=lihec8py7e9qtqppcsw1xz23
+@id=j6tbmx65y4qelwwr313xxg3g
+
+@categoryID=iuydjbxslhbrqjk52l7l84l4
 
 ### List all products
 GET {{baseUrl}}/api/products
+
+
+### Get product with populated relations
+GET {{baseUrl}}/api/products/?populate=*
 
 ### Get product by ID with populated relations
 GET {{baseUrl}}/api/products/{{id}}?populate=*
@@ -10,5 +16,5 @@ GET {{baseUrl}}/api/products/{{id}}?populate=*
 ### Get product by ID
 GET {{baseUrl}}/api/products/{{id}}
 
-
-
+### Filter products by category name
+GET {{baseUrl}}/api/products?filters[categories][slug][$eq]=infantiles&populate=localizations
