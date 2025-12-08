@@ -1,4 +1,5 @@
 import type { StrapiApp } from '@strapi/strapi/admin';
+import Logo from './extensions/logo_irean.png';
 
 export default {
   config: {
@@ -8,6 +9,12 @@ export default {
           primary500: '#0066cc',
           dark: '#1a1a1a',
         },
+     },
+     auth: {
+       logo: Logo,
+     },
+     menu: {
+       logo: Logo,
      },
   },
   bootstrap(app: StrapiApp) {

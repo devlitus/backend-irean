@@ -10,6 +10,12 @@ GET {{baseUrl}}/api/products
 ### Get product with populated relations
 GET {{baseUrl}}/api/products/?populate=*
 
+### Get product with populated relations
+GET {{baseUrl}}/api/products?[categories][populate]=*
+
+
+
+
 ### Get product by ID with populated relations
 GET {{baseUrl}}/api/products/{{id}}?populate=*
 
